@@ -1,4 +1,5 @@
 from pygame.image import load
+chessboard=load('Chinese-chess-board.png')
 bsoiders=load('001.png')
 bcannos=load('002.png')
 bhorses=load('003.png')
