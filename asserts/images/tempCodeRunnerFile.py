@@ -1,0 +1,1 @@
+chessboard=load('Chinese-chess-board.png')
