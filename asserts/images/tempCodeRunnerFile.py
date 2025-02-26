@@ -1,1 +1,1 @@
-chessboard=load('Chinese-chess-board.png')
+chessboard=load('Chinese-chess-board.png'
