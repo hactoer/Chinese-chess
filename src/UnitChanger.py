@@ -1,7 +1,7 @@
 import numpy as np
 from dfexception import NotSimplfiedException
-BoundaryLength=31
-BlockLength=(429-2*BoundaryLength)//8
+BoundaryLength=20
+BlockLength=185//8
 def PF(pos):
     "Position Fixer"
     return (pos-BoundaryLength//BlockLength)*BlockLength
