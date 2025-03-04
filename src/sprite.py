@@ -9,9 +9,7 @@ class Center(pygame.sprite.Sprite):
         self.rect.center=initposition
         self.side=side
     def check(self,MousePostion:tuple):
-        self.mpn=MousePostion
-        if self.rect.collidepoint(PF(*self.mp)):
-            ...
+        ...
     def prerun(self):
         ...
     def run(self):

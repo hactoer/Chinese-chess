@@ -11,3 +11,6 @@ def PTM(x,y)->tuple:
         raise NotSimplfiedException('Not Simplified')
     else:
         return (y-BoundaryLength)//BlockLength+1,(x-BoundaryLength)//BlockLength+1
+def MTP(y,x)->tuple:
+    "Matrix to Position"
+    return (y+1)*BlockLength+BoundaryLength,(x+1)*BlockLength+BoundaryLength
