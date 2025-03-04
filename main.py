@@ -1,5 +1,4 @@
 import pygame
-from asserts.images import images
 from ui.screen import screen,S
 pygame.init()
 a=True
