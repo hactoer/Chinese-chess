@@ -42,6 +42,7 @@ class Center(pygame.sprite.Sprite):
             }
         for i,j in Matrix:
             if Matrix[i][j]!='000':
+<<<<<<< HEAD
                 screen.blit(Dict[Matrix[i][j]],MTP(i,j))
     def check(self,mospos:tuple):
         for events in pygame.event.get():
@@ -51,3 +52,10 @@ class Center(pygame.sprite.Sprite):
     def prerun(self):
         self.type=Matrix[PTM(PF(self.position))]
         
+=======
+                screen
+    def check(self,mospos):
+        for events in pygame.event.get():
+            if events.type==pygame.MOUSEBUTTONDOWN:
+                
+>>>>>>> 9d997f41ea5e048050e8b2e8ce8e47acd29b41eb
