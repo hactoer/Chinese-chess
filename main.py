@@ -1,5 +1,5 @@
 import pygame
-from ui.screen import screen,S
+from ui.screen import S
 pygame.init()
 a=True
 while a:
