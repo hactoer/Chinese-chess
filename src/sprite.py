@@ -1,5 +1,6 @@
 import pygame
-from UnitChanger import *
+from src.UnitChanger import *
+from src.spritecontroller import *
 from asserts.images.images import *
 import numpy as np
 from ui.screen import screen
