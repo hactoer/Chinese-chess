@@ -2,14 +2,31 @@ from src.sprite import Matrix,Dict
 from src.UnitChanger import *
 from ui.screen import screen
 class Runner:
-    def rch(self):
+    def r(self):
+        self.side='r'
+        self.antiside='b'
+        return self
+    def b(self):
+        self.side='b'
+        self.antiside='r'
+        return self
+    def ch(self):
         i,j=PTM(*PF(self.position))
         x,y=PF(self.position)
-        while Matrix[i][j]!='000':
-            i+=1
-            screen.bilt(Dict[Matrix[i][j]],(x,y))
-        if 'b'==Matrix[i+1][j][0]:
-            screen.bilt(Dict[Matrix[i+1][j]],(x,y))
+        a='''
+        while Matrix[i+{m}][j+{n}]!='000':
+            i+={m}
+            j+={n}
+            screen.bilt(Dict[Matrix[i{m}][j{n}]],(x,y))
+            print(Matrix[i+{m}][j+{n}])
+        if 'self.antiside'==Matrix[i+{m}][j+{n}][0] and {s}:
+            screen.bilt(Dict[Matrix[i+{m}][j+{n}]],(x,y))
+            print(Matrix[i+{m}][j+{n}])
+        '''
+        exec(a.format(m=1,n=0,s='i<=9'))
+        exec(a.format(m=-1,n=0,s='i>=0'))
+        exec(a.format(m=0,n=1,s='j<=8'))
+        exec(a.format(m=0,n=-1,s='j>=0'))
 
     # Dict={
     #         'rch':(rchariots,...),
