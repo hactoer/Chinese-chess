@@ -32,7 +32,7 @@ Dict={
             'bca':(bcannos,...),
             'bso':(bsoiders,...),
     }
-class Center(pygame.sprite.Sprite):
+class Center:
     def init(self):
         for i,j in Matrix:
             if Matrix[i][j]!='000':
@@ -46,5 +46,5 @@ class Center(pygame.sprite.Sprite):
                     self.MatrixIndex=PTM(*PF(mospos))
     def prerun(self):
        ...
-        
+center=Center()
         
