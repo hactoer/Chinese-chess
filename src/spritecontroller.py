@@ -1,6 +1,7 @@
-from src.sprite import Matrix,Dict
-from src.UnitChanger import *
+from .sprite import Matrix,Dict
+from .UnitChanger import *
 from ui.screen import screen
+print(Matrix)
 class Runner:
     def r(self):
         self.side='r'
@@ -27,7 +28,7 @@ class Runner:
         exec(a.format(m=-1,n=0,s='i>=0'))
         exec(a.format(m=0,n=1,s='j<=8'))
         exec(a.format(m=0,n=-1,s='j>=0'))
-
+runner=Runner()
     # Dict={
     #         'rch':(rchariots,...),
     #         'rho':rhorses,
