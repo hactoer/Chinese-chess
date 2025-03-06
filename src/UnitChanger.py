@@ -1,5 +1,5 @@
 import numpy as np
-from src.dfexception import NotSimplfiedException
+from .dfexception import NotSimplfiedException
 BoundaryLength=20
 BlockLength=185//8
 def PF(pos:tuple):

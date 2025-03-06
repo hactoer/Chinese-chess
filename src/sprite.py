@@ -1,6 +1,6 @@
 import pygame
-from src.UnitChanger import *
-from src.spritecontroller import *
+from .UnitChanger import *
+from .spritecontroller import runner
 from asserts.images.images import *
 import numpy as np
 from ui.screen import screen
@@ -17,7 +17,7 @@ Matrix=[
         ['bch','bho','bel','bad','bge','bad','bel','bho','bch']
 ]
 Dict={
-            'rch':(rchariots,...),
+            'rch':(rchariots,runner.r().ch()),
             'rho':(rhorses,...),
             'rel':(relephants,...),
             'rad':(radvisors,...),
