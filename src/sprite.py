@@ -1,10 +1,10 @@
 import pygame
 from .UnitChanger import *
 from .spritecontroller import runner
-from asserts.images.images import *
+from  asserts.images.images import *
 import numpy as np
 from ui.screen import screen
-Matrix=[
+Matrix=np.array([
         ['rch','rho','rel','rad','rge','rad','rel','rho','rch'],
         ['000','000','000','000','000','000','000','000','000'],
         ['000','rca','000','000','000','000','000','rca','000'],
@@ -15,7 +15,7 @@ Matrix=[
         ['000','bca','000','000','000','000','000','bca','000'],
         ['000','000','000','000','000','000','000','000','000'],
         ['bch','bho','bel','bad','bge','bad','bel','bho','bch']
-]
+])
 Dict={
             'rch':(rchariots,runner.r().ch()),
             'rho':(rhorses,...),
@@ -34,6 +34,7 @@ Dict={
     }
 class Center:
     def init(self):
+        'To initialize the chessboard'
         for i,j in Matrix:
             if Matrix[i][j]!='000':
                 screen.blit(Dict[Matrix[i][j]][0],MTP(i,j))

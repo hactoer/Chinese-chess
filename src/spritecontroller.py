@@ -14,11 +14,13 @@ class Runner:
     def ch(self):
         i,j=PTM(*PF(self.position))
         x,y=PF(self.position)
+        l:list
         a='''
         while Matrix[i+{m}][j+{n}]!='000':
             i+={m}
             j+={n}
             screen.bilt(Dict[Matrix[i{m}][j{n}]],(x,y))
+            l.append((i+{m}j+{n}))
             print(Matrix[i+{m}][j+{n}])
         if 'self.antiside'==Matrix[i+{m}][j+{n}][0] and {s}:
             screen.bilt(Dict[Matrix[i+{m}][j+{n}]],(x,y))
