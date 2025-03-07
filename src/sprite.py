@@ -1,3 +1,4 @@
+'Here is the center of the sprites'
 import pygame
 from .UnitChanger import *
 from .spritecontroller import runner
@@ -34,9 +35,11 @@ Dict={
     }
 class Center:
     def init(self):
-        for i,j in Matrix:
-            if Matrix[i][j]!='000':
-                screen.blit(Dict[Matrix[i][j]][0],MTP(i,j))
+        'To initialize the chessboard'
+        for i in range(len(Matrix)):
+            for j in range(len(Matrix[i])):
+                if Matrix[i][j]!='000' and Matrix[i][j] in Dict:
+                    screen.blit(Dict[Matrix[i][j]][0],MTP(i,j))
     def check(self,mospos:tuple):
         for events in pygame.event.get():
             if events.type==pygame.MOUSEBUTTONDOWN:
