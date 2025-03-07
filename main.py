@@ -5,11 +5,10 @@ from src.sprite import center
 pygame.init()
 fps=60
 clock=pygame.time.Clock()
-screen=pygame.display.set_mode((185+BoundaryLength*2,205+BoundaryLength))
+screen=pygame.display.set_mode((185+BoundaryLength*2,205+BoundaryLength*2))
 pygame.display.set_caption("棋盤圖片顯示")
 a=True
 center.init()
-l:list
 while a:
     clock.tick(fps)
     screen.fill((255, 255, 255))
