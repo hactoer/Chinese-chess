@@ -6,6 +6,8 @@ from ui.screen import screen
 from .UnitChanger import *
 from ui.screen import screen
 from asserts.images.images import *
+import src.sprite as sprite
+
 Matrix=np.array([
         ['rch','rho','rel','rad','rge','rad','rel','rho','rch'],
         ['000','000','000','000','000','000','000','000','000'],
@@ -31,24 +33,35 @@ class Runner:
         self.antiside='r'
         return self
     def ch(self,position:tuple):
-        i,j=PTM(*PF(position))
         x,y=PF(position)
+        i,j=PTM(x,y)
         l:list
         a='''
-        while Matrix[i+{m}][j+{n}]!='000':
+        while Matrix[i][j] in sprite.Dict:
             i+={m}
             j+={n}
-            screen.bilt(Dict[Matrix[i{m}][j{n}]],(x,y))
+            screen.bilt(sprite.Dict[Matrix[i{m}][j{n}]],(x,y))
             l.append((i+{m}j+{n}))
             print(Matrix[i+{m}][j+{n}])
         if 'self.antiside'==Matrix[i+{m}][j+{n}][0] and {s}:
-            screen.bilt(Dict[Matrix[i+{m}][j+{n}]],(x,y))
+            screen.bilt(sprite.Dict[Matrix[i+{m}][j+{n}]],(x,y))
             print(Matrix[i+{m}][j+{n}])
         '''
-        exec(a.format(m=1,n=0,s='i<=9'))
-        exec(a.format(m=-1,n=0,s='i>=0'))
-        exec(a.format(m=0,n=1,s='j<=8'))
-        exec(a.format(m=0,n=-1,s='j>=0'))
+        exec(a.format(m=1,n=0,s='i+1<=9'))
+        exec(a.format(m=-1,n=0,s='i-1>=0'))
+        exec(a.format(m=0,n=1,s='j+1<=8'))
+        exec(a.format(m=0,n=-1,s='j-1>=0'))
+    def ho(self,position:tuple):
+        x,y=PF(position)
+        i,j=PTM(x,y)
+        l:list
+        a='''
+        if Matrix[i+{m}][j+{n}] not in spriteDict:
+            ...
+            
+        
+        
+        '''
 runner=Runner()
     # Dict={
     #         'rch':(rchariots,...),
@@ -66,19 +79,3 @@ runner=Runner()
     #         'bca':bcannos,
     #         'bso':bsoiders,
     # }
-Dict={
-            'rch':(rchariots,runner.r().ch),
-            'rho':(rhorses,...),
-            'rel':(relephants,...),
-            'rad':(radvisors,...),
-            'rge':(rgeneral,...),
-            'rca':(rcannos,...),
-            'rso':(rsoiders,...),
-            'bch':(bchariots,...),
-            'bho':(bhorses,...),
-            'bel':(belephants,...),
-            'bad':(badvisors,...),
-            'bge':(bgeneral,...),
-            'bca':(bcannos,...),
-            'bso':(bsoiders,...),
-    }

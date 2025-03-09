@@ -1,6 +1,5 @@
 import pygame
 from ui.screen import S
-from src.UnitChanger import BoundaryLength
 from src.sprite import center
 pygame.init()
 fps=60
@@ -18,5 +17,5 @@ while a:
             mospos=pygame.mouse.get_pos()
         if events.type==pygame.QUIT:
             a=False
-
+    S()
 pygame.quit()
