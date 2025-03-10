@@ -5,7 +5,7 @@ from .spritecontroller import runner
 from asserts.images.images import *
 import numpy as np
 from ui.screen import screen
-Matrix=[
+Matrix=np.array([
         ['rch','rho','rel','rad','rge','rad','rel','rho','rch'],
         ['000','000','000','000','000','000','000','000','000'],
         ['000','rca','000','000','000','000','000','rca','000'],
@@ -16,9 +16,9 @@ Matrix=[
         ['000','bca','000','000','000','000','000','bca','000'],
         ['000','000','000','000','000','000','000','000','000'],
         ['bch','bho','bel','bad','bge','bad','bel','bho','bch']
-]
+])
 Dict={
-            'rch':(rchariots,runner.r().ch()),
+            'rch':(rchariots,runner.r().ch),
             'rho':(rhorses,...),
             'rel':(relephants,...),
             'rad':(radvisors,...),
@@ -39,7 +39,8 @@ class Center:
         for i in range(len(Matrix)):
             for j in range(len(Matrix[i])):
                 if Matrix[i][j] in Dict:
-                    screen.blit(Dict[Matrix[i][j]][0],MTP(i,j))
+                    chessboard.blit(Dict[Matrix[i][j]][0],MTP(i,j))
+                    print(j,i,Matrix[i][j])
     def check(self,mospos:tuple):
         for events in pygame.event.get():
             if events.type==pygame.MOUSEBUTTONDOWN:

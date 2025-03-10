@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-from .sprite import Matrix,Dict
-from .UnitChanger import *
-from ui.screen import screen
-=======
 from .UnitChanger import *
 from ui.screen import screen
 from asserts.images.images import *
@@ -21,8 +16,6 @@ Matrix=np.array([
         ['bch','bho','bel','bad','bge','bad','bel','bho','bch']
 ])
 
->>>>>>> 63961f2db696548278820425b43f31cdf3f5abfa
-print(Matrix)
 class Runner:
     def r(self):
         self.side='r'
