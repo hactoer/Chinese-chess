@@ -1,2 +1,1 @@
-
-pygame.quit()
+screen.fill((247, 195, 110))
