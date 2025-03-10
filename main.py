@@ -9,7 +9,6 @@ a=True
 center.init()
 while a:
     clock.tick(fps)
-    # screen.fill((247, 195, 110))
     S()
     for events in pygame.event.get():
         if events.type==pygame.MOUSEBUTTONDOWN:
