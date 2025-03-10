@@ -1,6 +1,9 @@
 # from PIL import Image
 # import images
 # chessboard=Image.open(images.joinpro('Chinese-chess-board.png'))
+# from PIL import Image
+# import images
+# chessboard=Image.open(images.joinpro('Chinese-chess-board.png'))
     
 # new_size=(chessboard.size()[0]//8,chessboard.size()[1]//9)
 # for x in range(13):
