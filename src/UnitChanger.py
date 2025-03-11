@@ -1,8 +1,12 @@
 import numpy as np
 from .dfexception import NotSimplfiedException
+#<constants>
 BoundaryLength=20
-BlockLength=(185*2-BoundaryLength)//8
+OriginalBoardSize=(185,205)
+BlockLength=(OriginalBoardSize[0]*2-BoundaryLength)//8
 r=(BlockLength,BlockLength)
+sigma_yi_=12
+sigma_xj_=26
 def PF(pos:tuple)->tuple:
     "Position Fixer"
     return ((pos[0]-BoundaryLength)//BlockLength)*BlockLength,((pos[1]-BoundaryLength)//BlockLength)*BlockLength
@@ -14,4 +18,4 @@ def PTM(x,y)->tuple:
         return (y-BoundaryLength)//BlockLength,(x-BoundaryLength)//BlockLength
 def MTP(i,j)->tuple:
     "Matrix to Position(i,j)->(x,y)"
-    return (j)*BlockLength+BoundaryLength,(i)*BlockLength
+    return (j)*BlockLength+BoundaryLength-sigma_xj_,(i)*BlockLength-sigma_yi_
