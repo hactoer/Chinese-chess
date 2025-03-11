@@ -20,4 +20,4 @@ bhorses=scale(load(joinpro('012.png')),UC.r)
 bcannos=scale(load(joinpro('013.png')),UC.r)
 bsoiders=scale(load(joinpro('014.png')),UC.r)
 preon=scale(load(joinpro('hint.png')),UC.r)
-
+compunction=scale(load(joinpro('悔棋.png')),UC.r)
