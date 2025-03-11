@@ -1,12 +1,6 @@
 import numpy as np
 from .dfexception import NotSimplfiedException
-#<constants>
-BoundaryLength=20
-OriginalBoardSize=(185,205)
-BlockLength=(OriginalBoardSize[0]*2-BoundaryLength)//8
-r=(BlockLength,BlockLength)
-sigma_yi_=12
-sigma_xj_=26
+from .Constants import *
 def PF(pos:tuple)->tuple:
     "Position Fixer"
     return ((pos[0]-BoundaryLength)//BlockLength)*BlockLength,((pos[1]-BoundaryLength)//BlockLength)*BlockLength
