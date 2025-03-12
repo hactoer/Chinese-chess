@@ -33,11 +33,14 @@ class Runner:
         while Matrix[i][j] in sprite.Dict:
             i+={m}
             j+={n}
-            screen.bilt(sprite.Dict[Matrix[i{m}][j{n}]],(x,y))
-            l.append((i+{m}j+{n}))
+            x,y=MTP(i,j)
+            screen.bilt(sprite.Dict[Matrix[i+{m}][j+{n}]],(x,y))
+            l.append((x,y))
             print(Matrix[i+{m}][j+{n}])
         if 'self.antiside'==Matrix[i+{m}][j+{n}][0] and {s}:
+            x,y=MTP(i+{m},j+{n})
             screen.bilt(sprite.Dict[Matrix[i+{m}][j+{n}]],(x,y))
+            l.append((x,y))
             print(Matrix[i+{m}][j+{n}])
         '''
         exec(a.format(m=1,n=0,s='i+1<=9'))
@@ -48,12 +51,53 @@ class Runner:
         x,y=PF(position)
         i,j=PTM(x,y)
         l:list
+        d={1:(+1,+1)
+           2:(-1,+1)
+           3:(-1,-1)
+           4:(+1,-1)
+           }
+        d2={(0,1):(d[1],d[2])
+            (1,0):(d[1],d[4])
+            (0,-1):(d[3],d[4])
+            (-1,0):(d[2],d[3])
+            }
+        
         a='''
-        if Matrix[i+{m}][j+{n}] not in spriteDict:
-            ...
-            
-        
-        
+        if Matrix[i+{m}][j+{n}] not in sprite.Dict:
+
+            if (a:=Matrix[i+{m}+d2[(m,n)][0][1]][j+{n}+d2[(m,n)][0][0]])[0]==self.antiside or a=='000':
+                x,y=MTP(i+{m}+d2[(m,n)][0][1],j+{n}+d2[(m,n)][0][0])
+                screen.bilt(sprite.Dict[a],(x,y))
+                l.append((x,y))
+            if (b:=Matrix[i+{m}+d2[(m,n)][1][1]][j+{n}+d2[(m,n)][1][0]])[1]==self.antiside or b=='000':
+                x,y=MTP(i+{m}+d2[(m,n)][1][1],j+{n}+d2[(m,n)][1][0])
+                l.append((x,y))
+                screen.bilt(sprite.Dict[b],(x,y))
+        '''
+        exec(a.format(m=1,n=0)
+        exec(a.format(m=-1,n=0))
+        exec(a.format(m=0,n=1))
+        exec(a.format(m=0,n=-1))
+    def el(self,position:tuple):
+        x,y=PF(position)
+        i,j=PTM(x,y)
+        l:list
+        a='''
+        if Matrix[i+{m}][j+{n}] not in sprite.Dict:
+            if (s:=Matrix[i+{m}+{m}][j+{n}+{n}]) not in sprite.Dict or s[0]==self.antiside:
+                x,y=MTP(i+{m}+{m},j+{n}+{n})
+                screen.bilt(sprite.Dict[Matrix[i+{m}+{m}][j+{n}+{n}]],(x,y))
+                l.append((x,y))         
+        '''
+        exec(a.format(m=1,n=0))
+        exec(a.format(m=-1,n=0))
+        exec(a.format(m=0,n=1))        
+        exec(a.format(m=0,n=-1))
+    def ad(self,position:tuple):
+        x,y=PF(position)
+        i,j=PTM(x,y)
+        l:list
+        a='''
         '''
 runner=Runner()
     # Dict={
