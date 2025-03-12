@@ -1,42 +1,36 @@
-'Here is the center of the sprites'
 import pygame
-from .UnitChanger import *
-from .spritecontroller import runner
-from asserts.images.images import *
-import numpy as np
-from ui.screen import screen
-Matrix=scr.spritecontroller.Matrix
-Dict={
-            'rch':(rchariots,runner.r().ch),
-            'rho':(rhorses,...),
-            'rel':(relephants,...),
-            'rad':(radvisors,...),
-            'rge':(rgeneral,...),
-            'rca':(rcannos,...),
-            'rso':(rsoiders,...),
-            'bch':(bchariots,...),
-            'bho':(bhorses,...),
-            'bel':(belephants,...),
-            'bad':(badvisors,...),
-            'bge':(bgeneral,...),
-            'bca':(bcannos,...),
-            'bso':(bsoiders,...),
-    }
-class Center:
-    def init(self):
-        'To initialize the chessboard'
-        for i in range(len(Matrix)):
-            for j in range(len(Matrix[i])):
-                if Matrix[i][j] in Dict:
-                    screen.blit(Dict[Matrix[i][j]][0],MTP(i,j))
-                    print(MTP(i,j),Matrix[i][j])
-    def check(self,mospos:tuple):
-        for events in pygame.event.get():
-            if events.type==pygame.MOUSEBUTTONDOWN:
-                if Matrix[PTM(*PF(mospos))] != '000':
-                    print(Matrix[PTM(*PF(mospos))],PTM(*PF(mospos)))
-                    self.RealPosition=PF(mospos)
-                    self.MatrixIndex=PTM(*PF(mospos))
+class Center(pygame.sprite.Sprite):
+    def __init__(self,initposition,side,kind,image):
+        super().__init__()
+        self.image=image
+        self.rect=self.image.get_rect()
+        self.rect.center=initposition
+        self.side=side
+        self.kind=kind
+    def check(self,MousePostion):
+        ...
     def prerun(self):
-       ...
-center=Center()
+        ...
+    def run(self):
+        ...
+    def kill(self):
+        ...
+
+import pygame
+class Center(pygame.sprite.Sprite):
+    def __init__(self,initposition,side,kind,image):
+        super().__init__()
+        self.image=image
+        self.rect=self.image.get_rect()
+        self.rect.center=initposition
+        self.side=side
+        self.kind=kind
+    def check(self,MousePostion):
+        ...
+    def prerun(self):
+        ...
+    def run(self):
+        ...
+    def kill(self):
+        ...
+    

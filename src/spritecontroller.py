@@ -74,7 +74,7 @@ class Runner:
                 l.append((x,y))
                 screen.bilt(sprite.Dict[b],(x,y))
         '''
-        exec(a.format(m=1,n=0)
+        exec(a.format(m=1,n=0))
         exec(a.format(m=-1,n=0))
         exec(a.format(m=0,n=1))
         exec(a.format(m=0,n=-1))
