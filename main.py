@@ -10,8 +10,10 @@ center.init()
 while a:
     clock.tick(fps)
     mospos=pygame.mouse.get_pos()
-    print(mospos)
+    print(mospos)                     #之後必須得刪
     for events in pygame.event.get():
+        if events.type==pygame.MOUSEBUTTONDOWN:
+            mospos=pygame.mouse.get_pos()
         if events.type==pygame.QUIT:
             a=False
     S()
