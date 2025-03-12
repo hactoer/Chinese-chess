@@ -12,6 +12,7 @@ chessboard=scale2x(load(joinpro('Chinese-chess-board.png')))
 # rgeneral=scale(load(joinpro('001.png')),UC.r)
 image = Image.open(joinpro('001.png'))  # 你的 joinpro 應該是路徑處理函數
 sharpened_image = image.filter(ImageFilter.UnsharpMask(radius=2, percent=200, threshold=3))
+print(sharpened_image)
 # rgeneral=fromstring(sharpened_image.tobytes()scale(sharpened_image), size = sharpened_image.size,sharpened_image.mode)
 rgeneral=scale(frombuffer(
     sharpened_image.tobytes(), sharpened_image.size, "RGBA"
