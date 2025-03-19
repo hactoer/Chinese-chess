@@ -39,7 +39,7 @@ class Center:
         for i in range(len(Matrix)):
             for j in range(len(Matrix[i])):
                 if Matrix[i][j] in Dict:
-                    chessboard.blit(Dict[Matrix[i][j]][0],MTP(i,j))
+                    screen.blit(Dict[Matrix[i][j]][0],MTP(i,j))
                     print(MTP(i,j),Matrix[i][j])
     def check(self,mospos:tuple):
         for events in pygame.event.get():

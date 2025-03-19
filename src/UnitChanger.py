@@ -12,4 +12,4 @@ def PTM(x,y)->tuple:
         return (y-BoundaryLength)//BlockLength,(x-BoundaryLength)//BlockLength
 def MTP(i,j)->tuple:
     "Matrix to Position(i,j)->(x,y)"
-    return (j)*BlockLength+BoundaryLength-sigma_xj_,(i)*BlockLength-sigma_yi_
+    return mul_xj_*(j)*BlockLength+BoundaryLength-sigma_xj_,mul_yi_*(i)*BlockLength-sigma_yi_
