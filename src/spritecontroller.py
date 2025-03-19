@@ -2,6 +2,7 @@ from .UnitChanger import *
 from ui.screen import screen
 from asserts.images.images import *
 import src.sprite as sprite
+from math import floor
 Matrix=np.array([
         ['rch','rho','rel','rad','rge','rad','rel','rho','rch'],
         ['000','000','000','000','000','000','000','000','000'],
@@ -23,7 +24,7 @@ class Runner:
         self.side='b'
         self.antiside='r'
         return self
-    def ch(self,position:tuple): #???
+    def ch(self,position:tuple): #車
         x,y=PF(position)
         i,j=PTM(x,y)
         l:list
@@ -107,6 +108,18 @@ class Runner:
         l:list
         a='''
         '''
+    def so(self,position:tuple):#兵
+        x,y=PF(position)
+        i,j=PTM(x,y)
+        l:list
+        a=...
+        if (self.antiside=='r'and i<5)or(self.antiside=='b' and i>9):
+            match floor(i / 5):
+                case 0:
+                    lim = 5
+                case 1:
+                    lim = 9
+        
 runner=Runner()
     # Dict={
     #         'rch':rchariots,
