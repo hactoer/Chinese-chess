@@ -109,7 +109,7 @@ class Runner:
         '''
 runner=Runner()
     # Dict={
-    #         'rch':(rchariots),
+    #         'rch':rchariots,
     #         'rho':rhorses,
     #         'rel':relephants,
     #         'rad':radvisors,
