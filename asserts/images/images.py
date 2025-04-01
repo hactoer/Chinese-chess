@@ -3,7 +3,7 @@ from os.path import join
 from pygame.transform import scale,scale2x
 from pygame.image import fromstring,frombuffer
 from PIL import Image,ImageFilter
-import src.UnitChanger as UC
+import tool.UnitChanger as UC
 def joinpro(file):
     return join('asserts','images',file)
     return Image.open(file)

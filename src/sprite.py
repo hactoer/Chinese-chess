@@ -1,10 +1,10 @@
-'Here is the center of the sprites'
-import pygame
-from .UnitChanger import *
-from .spritecontroller import runner
-from asserts.images.images import *
+'This is the center of the sprites'
+from tool.UnitChanger import *
 import numpy as np
-from ui.screen import screen
+import pygame
+from asserts.images.images import *
+from tool.Constants import r
+screen=pygame.display.set_mode((OriginalBoardSize[0]*2+BoundaryLength*2,OriginalBoardSize[1]*2+BoundaryLength))
 Matrix=np.array([
         ['rch','rho','rel','rad','rge','rad','rel','rho','rch'],
         ['000','000','000','000','000','000','000','000','000'],
@@ -18,36 +18,154 @@ Matrix=np.array([
         ['bch','bho','bel','bad','bge','bad','bel','bho','bch']
 ])
 Dict={
-            'rch':(rchariots,runner.r().ch),
-            'rho':(rhorses,...),
-            'rel':(relephants,...),
-            'rad':(radvisors,...),
-            'rge':(rgeneral,...),
-            'rca':(rcannos,...),
-            'rso':(rsoiders,...),
-            'bch':(bchariots,...),
-            'bho':(bhorses,...),
-            'bel':(belephants,...),
-            'bad':(badvisors,...),
-            'bge':(bgeneral,...),
-            'bca':(bcannos,...),
-            'bso':(bsoiders,...),
+            'rch':rchariots,
+            'rho':rhorses,
+            'rel':relephants,
+            'rad':radvisors,
+            'rge':rgeneral,
+            'rca':rcannos,
+            'rso':rsoiders,
+            'bch':bchariots,
+            'bho':bhorses,
+            'bel':belephants,
+            'bad':badvisors,
+            'bge':bgeneral,
+            'bca':bcannos,
+            'bso':bsoiders,
     }
+class Runner:
+    def r(self):
+        self.side='r'
+        self.antiside='b'
+        return self
+    def b(self):
+        self.side='b'
+        self.antiside='r'
+        return self
+    def ch(self,position:tuple):
+        x,y=PF(position)
+        i,j=PTM(x,y)
+        l:list
+        a='''
+        while Matrix[i][j] in Dict:
+            i+={m}
+            j+={n}
+            x,y=MTP(i,j)
+            screen.bilt(Dict[Matrix[i+{m}][j+{n}]],(x,y))
+            l.append((x,y))
+            print(Matrix[i+{m}][j+{n}])
+        if 'self.antiside'==Matrix[i+{m}][j+{n}][0] and {s}:
+            x,y=MTP(i+{m},j+{n})
+            screen.bilt(Dict[Matrix[i+{m}][j+{n}]],(x,y))
+            l.append((x,y))
+            print(Matrix[i+{m}][j+{n}])
+        '''
+        exec(a.format(m=1,n=0,s='i+1<=9'))
+        exec(a.format(m=-1,n=0,s='i-1>=0'))
+        exec(a.format(m=0,n=1,s='j+1<=8'))
+        exec(a.format(m=0,n=-1,s='j-1>=0'))
+    def ho(self,position:tuple):
+        x,y=PF(position)
+        i,j=PTM(x,y)
+        l:list
+        d={1:(+1,+1),
+           2:(-1,+1),
+           3:(-1,-1),
+           4:(+1,-1),
+           }
+        d2={(0,1):(d[1],d[2]),
+            (1,0):(d[1],d[4]),
+            (0,-1):(d[3],d[4]),
+            (-1,0):(d[2],d[3]),
+            }
+        a='''
+        if Matrix[i+{m}][j+{n}] not in Dict:
+            if (a:=Matrix[i+{m}+d2[(m,n)][0][1]][j+{n}+d2[(m,n)][0][0]]) and a[0]==self.antiside or a=='000':
+                x,y=MTP(i+{m}+d2[(m,n)][0][1],j+{n}+d2[(m,n)][0][0])
+                screen.bilt(Dict[a],(x,y))
+                l.append((x,y))
+            if (b:=Matrix[i+{m}+d2[(m,n)][1][1]][j+{n}+d2[(m,n)][1][0]])and b[0]==self.antiside or b=='000':
+                x,y=MTP(i+{m}+d2[(m,n)][1][1],j+{n}+d2[(m,n)][1][0])
+                l.append((x,y))
+                screen.bilt(Dict[b],(x,y))
+        '''
+        exec(a.format(m=1,n=0))
+        exec(a.format(m=-1,n=0))
+        exec(a.format(m=0,n=1))
+        exec(a.format(m=0,n=-1))
+    def el(self,position:tuple):
+        x,y=PF(position)
+        i,j=PTM(x,y)
+        l:list
+        a='''
+        lim:int
+        match floor(i/5):
+            case 0:
+                lim=5
+            case 1:
+                lim=9
+        if Matrix[i+{m}][j+{n}] not in Dict:
+            if (s:=Matrix[i+{m}+{m}][j+{n}+{n}]) not in Dict or s[0]==self.antiside and lim-5<=i+{m}+{m}<=lim:
+                x,y=MTP(i+{m}+{m},j+{n}+{n})
+                screen.bilt(Dict[Matrix[i+{m}+{m}][j+{n}+{n}]],(x,y))
+                l.append((x,y))       
+        '''
+        exec(a.format(m=1,n=0))
+        exec(a.format(m=-1,n=0))
+        exec(a.format(m=0,n=1))        
+        exec(a.format(m=0,n=-1))
+    def ad(self,position:tuple):
+        x,y=PF(position)
+        i,j=PTM(x,y)
+        l:list
+        a='''
+        '''
+    def ge(self,position:tuple):
+        x,y=PF(position)
+        i,j=PTM(x,y)
+        l:list
+        a='''
+        '''
+    def ca(self,position:tuple):
+        ...
+    def so(self,position:tuple):
+        ...
+runner=Runner()
+RunDict={
+    
+            'rch':runner.r().ch,
+            'rho':runner.r().ho,
+            'rel':runner.r().el,
+            'rad':runner.r().ad,
+            'rge':runner.r().ge,
+            'rca':runner.r().ca,
+            'rso':runner.r().so,
+            'bch':runner.b().ch,
+            'bho':runner.b().ho,
+            'bel':runner.b().el,
+            'bad':runner.b().ad,
+            'bge':runner.b().ge,
+            'bca':runner.b().ca,
+            'bso':runner.b().so, 
+}
 class Center:
     def init(self):
         'To initialize the chessboard'
         for i in range(len(Matrix)):
             for j in range(len(Matrix[i])):
                 if Matrix[i][j] in Dict:
-                    screen.blit(Dict[Matrix[i][j]][0],MTP(i,j))
+                    screen.blit(Dict[Matrix[i][j]],MTP(i,j))
                     print(MTP(i,j),Matrix[i][j])
     def check(self,mospos:tuple):
         for events in pygame.event.get():
             if events.type==pygame.MOUSEBUTTONDOWN:
-                if Matrix[PTM(*PF(mospos))] != '000':
-                    print(Matrix[PTM(*PF(mospos))],PTM(*PF(mospos)))
-                    self.RealPosition=PF(mospos)
-                    self.MatrixIndex=PTM(*PF(mospos))
+                if m:=Matrix[*PTM(*PF(mospos))] != '000':
+                    print(m,PTM(*PF(mospos)))
+                    Dict[m]=pygame.transform.scale(Dict[m],(1.5*r[0],1.5*r[1]))
+                    screen.bilt(Dict[m],mospos)
+                else:
+                    Dict[m]=pygame.transform.scale(Dict[m],(r[0],r[1]))
+                    screen.bilt(Dict[m],mospos)
     def prerun(self):
        ...
 center=Center()

@@ -2,10 +2,12 @@ import pygame
 from ui.screen import screeninit
 from src.sprite import center
 from asserts.images import images
-from src.Constants import *
+from tool.Constants import *
 from INIT import version
+
 def main():
     screeninit()
+    a=True
     while a:
         fps=60
         clock=pygame.time.Clock()
