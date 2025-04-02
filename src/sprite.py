@@ -110,10 +110,10 @@ class Runner:
         self.l=[]
         a='''
         lim:int
-        match floor(i/5):
-            case 0:
+        match i:
+            case 0|1|2|3|4:
                 lim=5
-            case 1:
+            case 5|6|7|8|9:
                 lim=9
         if Matrix[i+{m}][j+{n}] not in Dict:
             if ((s:=Matrix[i+{m}+{m}][j+{n}+{n}]) not in Dict 
@@ -131,6 +131,33 @@ class Runner:
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
+<<<<<<< HEAD
+=======
+        a='''
+        match i:
+            case 0|1|2|3|4:
+                limj=(...)
+                limi=(...)
+            case 5|6|7|8|9:
+                limj=(...)
+                limi=(...)
+        if (Matrix[i+{m}][j+{n}] not in Dict 
+        or self.antiside==Matrix[i+{m}][j+{n}][0] 
+        and limi<=i+{m}<=limj):
+            x,y=MTP(i+{m},j+{n})
+            print(x,y)
+            self.l.append((x,y))
+        '''
+        exec(a.format(m=1,n=1))
+        exec(a.format(m=-1,n=-1))
+        exec(a.format(m=-1,n=1))
+        exec(a.format(m=1,n=-1))
+        return self
+    def ge(self,position:tuple):
+        x,y=PF(position)
+        i,j=PTM(x,y)
+        self.l=[]
+>>>>>>> d9e763998d7bec2e34c9fd2ab3a4119c33e5133d
         a='''
         match floor(i/5):
             case 0:
@@ -139,6 +166,7 @@ class Runner:
             case 1:
                 limj=(...)
                 limi=(...)
+<<<<<<< HEAD
         if (Matrix[i+{m}][j+{n}] not in Dict 
         or self.antiside==Matrix[i+{m}][j+{n}][0] 
         and limi<=i+{m}<=limj):
@@ -170,6 +198,14 @@ class Runner:
         return self
     
     def ca(self,position:tuple):#cannon
+=======
+        if (Matrix[i+{m}][j+{n}] not in Dict
+        or self.antiside==Matrix[i+{m}][j+{n}][0]):
+            ...
+        '''
+        return self
+    def ca(self,position:tuple):
+>>>>>>> d9e763998d7bec2e34c9fd2ab3a4119c33e5133d
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
@@ -201,7 +237,10 @@ class Runner:
             i+={m}
             j+={n}         
         return self
+<<<<<<< HEAD
     
+=======
+>>>>>>> d9e763998d7bec2e34c9fd2ab3a4119c33e5133d
     def PrePrint(self):
         for li in self.l:
             screen.bilt(preon,li)
