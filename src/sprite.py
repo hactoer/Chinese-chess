@@ -106,10 +106,10 @@ class Runner:
         self.l=[]
         a='''
         lim:int
-        match floor(i/5):
-            case 0:
+        match i:
+            case 0|1|2|3|4:
                 lim=5
-            case 1:
+            case 5|6|7|8|9:
                 lim=9
         if Matrix[i+{m}][j+{n}] not in Dict:
             if ((s:=Matrix[i+{m}+{m}][j+{n}+{n}]) not in Dict 
@@ -128,11 +128,11 @@ class Runner:
         i,j=PTM(x,y)
         self.l=[]
         a='''
-        match floor(i/5):
-            case 0:
+        match i:
+            case 0|1|2|3|4:
                 limj=(...)
                 limi=(...)
-            case 1:
+            case 5|6|7|8|9:
                 limj=(...)
                 limi=(...)
         if (Matrix[i+{m}][j+{n}] not in Dict 
@@ -161,7 +161,7 @@ class Runner:
                 limi=(...)
         if (Matrix[i+{m}][j+{n}] not in Dict
         or self.antiside==Matrix[i+{m}][j+{n}][0]):
-        ...
+            ...
         '''
         return self
     def ca(self,position:tuple):
