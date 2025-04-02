@@ -51,19 +51,19 @@ class Runner:
             i+={m}
             j+={n}
             x,y=MTP(i,j)
-            screen.bilt(Dict[Matrix[i+{m}][j+{n}]],(x,y))
+            print(x,y)
             l.append((x,y))
-            print(Matrix[i+{m}][j+{n}])
         if 'self.antiside'==Matrix[i+{m}][j+{n}][0] and {s}:
             x,y=MTP(i+{m},j+{n})
-            screen.bilt(Dict[Matrix[i+{m}][j+{n}]],(x,y))
+            print(x,y)
             l.append((x,y))
-            print(Matrix[i+{m}][j+{n}])
+           
         '''
         exec(a.format(m=1,n=0,s='i+1<=9'))
         exec(a.format(m=-1,n=0,s='i-1>=0'))
         exec(a.format(m=0,n=1,s='j+1<=8'))
         exec(a.format(m=0,n=-1,s='j-1>=0'))
+        return self
     def ho(self,position:tuple):
         x,y=PF(position)
         i,j=PTM(x,y)
@@ -82,17 +82,18 @@ class Runner:
         if Matrix[i+{m}][j+{n}] not in Dict:
             if (a:=Matrix[i+{m}+d2[(m,n)][0][1]][j+{n}+d2[(m,n)][0][0]]) and a[0]==self.antiside or a=='000':
                 x,y=MTP(i+{m}+d2[(m,n)][0][1],j+{n}+d2[(m,n)][0][0])
-                screen.bilt(Dict[a],(x,y))
+                print(x,y)
                 l.append((x,y))
-            if (b:=Matrix[i+{m}+d2[(m,n)][1][1]][j+{n}+d2[(m,n)][1][0]])and b[0]==self.antiside or b=='000':
+            if (b:=Matrix[i+{m}+d2[(m,n)][1][1]][j+{n}+d2[(m,n)][1][0]]) and b[0]==self.antiside or b=='000':
                 x,y=MTP(i+{m}+d2[(m,n)][1][1],j+{n}+d2[(m,n)][1][0])
+                print(x,y)
                 l.append((x,y))
-                screen.bilt(Dict[b],(x,y))
         '''
         exec(a.format(m=1,n=0))
         exec(a.format(m=-1,n=0))
         exec(a.format(m=0,n=1))
         exec(a.format(m=0,n=-1))
+        return self
     def el(self,position:tuple):
         x,y=PF(position)
         i,j=PTM(x,y)
@@ -107,32 +108,50 @@ class Runner:
         if Matrix[i+{m}][j+{n}] not in Dict:
             if (s:=Matrix[i+{m}+{m}][j+{n}+{n}]) not in Dict or s[0]==self.antiside and lim-5<=i+{m}+{m}<=lim:
                 x,y=MTP(i+{m}+{m},j+{n}+{n})
-                screen.bilt(Dict[Matrix[i+{m}+{m}][j+{n}+{n}]],(x,y))
                 l.append((x,y))       
         '''
         exec(a.format(m=1,n=0))
         exec(a.format(m=-1,n=0))
         exec(a.format(m=0,n=1))        
         exec(a.format(m=0,n=-1))
+        return self
     def ad(self,position:tuple):
         x,y=PF(position)
         i,j=PTM(x,y)
         l:list
         a='''
+        match floor(i/5):
+            case 0:
+                limj=(...)
+                limi=(...)
+            case 1:
+                limj=(...)
+                limi=(...)
+        if Matrix[i+{m}][j+{n}] not in Dict or self.antiside==Matrix[i+{m}][j+{n}][0] and limi<=i+{m}<=limj:
+            x,y=MTP(i+{m},j+{n})
+            print(x,y)
+            l.append((x,y))
         '''
+        exec(a.format(m=1,n=0))
+        exec(a.format(m=-1,n=0))
+        exec(a.format(m=0,n=1))
+        exec(a.format(m=0,n=-1))
+        return self
     def ge(self,position:tuple):
         x,y=PF(position)
         i,j=PTM(x,y)
         l:list
         a='''
         '''
+        return self
     def ca(self,position:tuple):
         ...
+        return self
     def so(self,position:tuple):
         ...
+        return self
 runner=Runner()
 RunDict={
-    
             'rch':runner.r().ch,
             'rho':runner.r().ho,
             'rel':runner.r().el,
@@ -159,7 +178,7 @@ class Center:
     def check(self,mospos:tuple):
         for events in pygame.event.get():
             if events.type==pygame.MOUSEBUTTONDOWN:
-                if m:=Matrix[*PTM(*PF(mospos))] != '000':
+                if (m:=Matrix[*PTM(*PF(mospos))]) != '000':
                     print(m,PTM(*PF(mospos)))
                     Dict[m]=pygame.transform.scale(Dict[m],(1.5*r[0],1.5*r[1]))
                     screen.bilt(Dict[m],mospos)
@@ -167,5 +186,5 @@ class Center:
                     Dict[m]=pygame.transform.scale(Dict[m],(r[0],r[1]))
                     screen.bilt(Dict[m],mospos)
     def prerun(self):
-       ...
+        ...
 center=Center()
