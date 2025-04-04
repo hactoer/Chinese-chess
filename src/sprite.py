@@ -5,7 +5,7 @@ import pygame
 from asserts.images.images import *
 from tool.Constants import r
 from math import floor
-screen=pygame.display.set_mode((OriginalBoardSize[0]*2+BoundaryLength*2,OriginalBoardSize[1]*2+BoundaryLength))
+screen=pygame.display.set_mode(ScreenSize)
 Matrix=np.array([
         ['rch','rho','rel','rad','rge','rad','rel','rho','rch'],
         ['000','000','000','000','000','000','000','000','000'],
@@ -35,17 +35,15 @@ Dict={
             'bso':bsoiders,
     }
 class Runner:
-    def r(self):#red
+    def red(self):
         self.side='r'
         self.antiside='b'
         return self
-    
-    def b(self):#black
+    def black(self):
         self.side='b'
         self.antiside='r'
         return self
-    
-    def ch(self,position:tuple):#chessboard?
+    def ch(self,position:tuple):
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
@@ -68,8 +66,7 @@ class Runner:
         exec(a.format(m=0,n=1,s='j+1<=8'))
         exec(a.format(m=0,n=-1,s='j-1>=0'))
         return self
-
-    def ho(self,position:tuple):#horse
+    def ho(self,position:tuple):
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
@@ -103,8 +100,7 @@ class Runner:
         exec(a.format(m=0,n=1))
         exec(a.format(m=0,n=-1))
         return self
-    
-    def el(self,position:tuple):#elephant
+    def el(self,position:tuple):
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
@@ -127,12 +123,10 @@ class Runner:
         exec(a.format(m=0,n=1))        
         exec(a.format(m=0,n=-1))
         return self
-    def ad(self,position:tuple):#士
+    def ad(self,position:tuple):
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
-<<<<<<< HEAD
-=======
         a='''
         match i:
             case 0|1|2|3|4:
@@ -157,7 +151,6 @@ class Runner:
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
->>>>>>> d9e763998d7bec2e34c9fd2ab3a4119c33e5133d
         a='''
         match floor(i/5):
             case 0:
@@ -166,46 +159,12 @@ class Runner:
             case 1:
                 limj=(...)
                 limi=(...)
-<<<<<<< HEAD
-        if (Matrix[i+{m}][j+{n}] not in Dict 
-        or self.antiside==Matrix[i+{m}][j+{n}][0] 
-        and limi<=i+{m}<=limj):
-            x,y=MTP(i+{m},j+{n})
-            print(x,y)
-            self.l.append((x,y))
-        '''
-        exec(a.format(m=1,n=1))
-        exec(a.format(m=-1,n=-1))
-        exec(a.format(m=-1,n=1))
-        exec(a.format(m=1,n=-1))
-        return self
-    def ge(self,position:tuple):#將軍
-        x,y=PF(position)
-        i,j=PTM(x,y)
-        self.l=[]
-        a='''
-        match floor(i/5):
-            case 0:
-                limj=(...)
-                limi=(...)
-            case 1:
-                limj=(...)
-                limi=(...)
-        if (Matrix[i+{m}][j+{n}] not in Dict
-        or self.antiside==Matrix[i+{m}][j+{n}][0]):
-        ...
-        '''
-        return self
-    
-    def ca(self,position:tuple):#cannon
-=======
         if (Matrix[i+{m}][j+{n}] not in Dict
         or self.antiside==Matrix[i+{m}][j+{n}][0]):
             ...
         '''
         return self
     def ca(self,position:tuple):
->>>>>>> d9e763998d7bec2e34c9fd2ab3a4119c33e5133d
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
@@ -221,45 +180,31 @@ class Runner:
             j+={n}         
     '''
         return self
-    
-    def so(self,position:tuple):#soidier
-        x,y=PF(position)
-        i,j=PTM(x,y)
-        self.l=[]
-        a='''     '''
-        while Matrix[i][j] not in Dict:
-            i+={m}
-            j+={n}
-            x,y=MTP(i,j)
-            print(x,y)
-            self.l.append((x,y))
-        while 0=<i<=9 and 0=<j<=8: 
-            i+={m}
-            j+={n}         
+    def so(self,position:tuple):
+        ...
         return self
-<<<<<<< HEAD
-    
-=======
->>>>>>> d9e763998d7bec2e34c9fd2ab3a4119c33e5133d
     def PrePrint(self):
         for li in self.l:
-            screen.bilt(preon,li)
+            screen.blit(preon,li)
+    def __init__(self):
+        self.r=self.red()
+        self.b=self.black()
 runner=Runner()
 RunDict={
-            'rch':runner.r().ch,
-            'rho':runner.r().ho,
-            'rel':runner.r().el,
-            'rad':runner.r().ad,
-            'rge':runner.r().ge,
-            'rca':runner.r().ca,
-            'rso':runner.r().so,
-            'bch':runner.b().ch,
-            'bho':runner.b().ho,
-            'bel':runner.b().el,
-            'bad':runner.b().ad,
-            'bge':runner.b().ge,
-            'bca':runner.b().ca,
-            'bso':runner.b().so, 
+            'rch':runner.r.ch,
+            'rho':runner.r.ho,
+            'rel':runner.r.el,
+            'rad':runner.r.ad,
+            'rge':runner.r.ge,
+            'rca':runner.r.ca,
+            'rso':runner.r.so,
+            'bch':runner.b.ch,
+            'bho':runner.b.ho,
+            'bel':runner.b.el,
+            'bad':runner.b.ad,
+            'bge':runner.b.ge,
+            'bca':runner.b.ca,
+            'bso':runner.b.so, 
 }
 class Center:
     def init(self):

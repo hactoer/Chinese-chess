@@ -1,11 +1,8 @@
 import pygame
-from ui.screen import screeninit
-from src.sprite import center
-from asserts.images import images
+from ui.screen import *
 from tool.Constants import *
-from INIT import version
-
 def main():
+    LoadING()
     screeninit()
     a=True
     while a:
