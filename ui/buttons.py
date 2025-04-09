@@ -19,10 +19,11 @@ class Button(pygame.sprite.Sprite):
             self.image=pygame.transform.scale(self.image,ButtonSize)
     def kill(self):
         pygame.sprite.Sprite.kill(self)
-    def Clicked(self):
-        global mode
-        self.mode=mode
-class twoplayer(Button):
+    def Clicked(self,mp):
+        if self.rect.collidepoint(mp):
+            global mode
+            self.mode=mode
+class TP(Button):
     def __init__(self):
         super().__init__(TwoPlayerButton,
                          (ScreenSize[0]//2-20,ScreenSize[1]//2-20),
@@ -31,9 +32,9 @@ class twoplayer(Button):
         super().update(mousepos)
     def kill(self):
         super().kill()
-    def Clicked(self):
-        super().Clicked()
-class aiplayer(Button):
+    def Clicked(self,mp):
+        super().Clicked(mp)
+class AI(Button):
     def __init__(self):
         super().__init__(AIPlayerButton,
                          (ScreenSize[0]//2-20,ScreenSize[1]//2+150),
@@ -42,10 +43,17 @@ class aiplayer(Button):
         super().update(mousepos)
     def kill(self):
         super().kill()
-    def Clicked(self):
-        super().Clicked()
+    def Clicked(self,mp):
+        super().Clicked(mp)
+tp=TP()
+ai=AI()
 ButtonGroup=pygame.sprite.Group()
-tp=twoplayer()
-ap=aiplayer()
-ButtonGroup.add(tp,ap)
-mode=None
+tp.add(ButtonGroup)
+ai.add(ButtonGroup)
+def Ckscreeninit(f):
+    def rapper(f,mp):
+        global mode
+        tp.Clicked(mp)
+        ai.Clicked(mp)
+        f(mode)
+    return rapper

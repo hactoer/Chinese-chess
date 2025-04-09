@@ -226,6 +226,6 @@ class Center:
                     Dict[m]=pygame.transform.scale(Dict[m],(r[0],r[1]))
                     screen.blit(Dict[m],mospos)
     def run(self,mospos:tuple):
-        
+
         ...
 center=Center()

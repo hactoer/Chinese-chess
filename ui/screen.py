@@ -24,32 +24,29 @@ def LoadING():
         time.sleep(random.randint(1,10)*0.01)
         pygame.time.Clock().tick(60)
         pygame.display.flip()
-
 def MainOption():
     global mode
     pygame.display.set_caption(f'Chinese Chess {version}')
     screen.fill(BACKGROUND)
     Run=True
-    def screeninit(mode):
-        global a
-        pygame.display.set_caption(f'Chinese Chess {version}'+'({mode})')
-        a=True
-        screen.fill(BACKGROUND)
-        screen.blit(chessboard,(BoundaryLength,0))
     while Run:
         pygame.time.Clock().tick(60)
         mp=pygame.mouse.get_pos()
         print(mp,mode,sep=';')
+        @Ckscreeninit(mp)
+        def screeninit(mode):
+            global a
+            pygame.display.set_caption(f'Chinese Chess {version}+::({mode})')
+            screen.fill(BACKGROUND)
+            screen.blit(chessboard,(BoundaryLength,0))
+            a=True
         ButtonGroup.update(mp)
         ButtonGroup.draw(screen)
         pygame.display.flip()
         pygame.display.update()
         for events in pygame.event.get():
             if events.type==pygame.MOUSEBUTTONDOWN:
-                for button in ButtonGroup:
-                    if button.rect.collidepoint(mp):
-                        mode=button.mode
-                        screeninit(mode)
+                screeninit(mode)
             if events.type==pygame.QUIT:
                 Run=False
     ButtonGroup.kill()
