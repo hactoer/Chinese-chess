@@ -4,7 +4,8 @@ from tool.Constants import *
 mode=None
 class Button(pygame.sprite.Sprite):
     def __init__(self,image:pygame.surface,position:tuple,mode):
-        pygame.sprite.Sprite().__init__(self)
+        # pygame.sprite.Sprite().__init__(self)
+        super().__init__()
         self.image=image
         self.rect=self.image.get_rect()
         self.position=position
