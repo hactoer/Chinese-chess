@@ -49,8 +49,8 @@ class AI(Button):
 tp=TP()
 ai=AI()
 ButtonGroup=pygame.sprite.Group()
-tp.add(ButtonGroup)
-ai.add(ButtonGroup)
+ButtonGroup.add(tp)
+ButtonGroup.add(ai)
 def Ckscreeninit(f):
     def rapper(f,mp):
         global mode
