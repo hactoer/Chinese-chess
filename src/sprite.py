@@ -175,7 +175,7 @@ class Runner:
             x,y=MTP(i,j)
             print(x,y)
             self.l.append((x,y))
-        while 0=<i<=9 and 0=<j<=8: 
+        while 0<=i<=9 and 0<=j<=8: 
             i+={m}
             j+={n}         
     '''
