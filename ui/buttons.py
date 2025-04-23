@@ -3,8 +3,8 @@ import pygame
 from tool.Constants import *
 mode=None
 class Button(pygame.sprite.Sprite):
-    def __init__(self,image:pygame.Surface,position:tuple,mode):
-        super().__init__()
+    def __init__(self,image:pygame.surface,position:tuple,mode):
+        pygame.sprite.Sprite().__init__(self)
         self.image=image
         self.Originalimage=image
         self.rect=self.image.get_rect()

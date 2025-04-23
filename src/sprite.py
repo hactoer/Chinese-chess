@@ -66,6 +66,7 @@ class Runner:
         exec(a.format(m=0,n=1,s='j+1<=8'))
         exec(a.format(m=0,n=-1,s='j-1>=0'))
         return self
+    
     def ho(self,position:tuple):
         x,y=PF(position)
         i,j=PTM(x,y)
@@ -100,6 +101,7 @@ class Runner:
         exec(a.format(m=0,n=1))
         exec(a.format(m=0,n=-1))
         return self
+    
     def el(self,position:tuple):
         x,y=PF(position)
         i,j=PTM(x,y)
@@ -123,30 +125,31 @@ class Runner:
         exec(a.format(m=0,n=1))        
         exec(a.format(m=0,n=-1))
         return self
-    def ad(self,position:tuple):
+    
+    def ad(self,position:tuple):  #士
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
-        a='''
         match i:
-            case 0|1|2|3|4:
-                limj=(...)
-                limi=(...)
-            case 5|6|7|8|9:
-                limj=(...)
-                limi=(...)
-        if (Matrix[i+{m}][j+{n}] not in Dict 
-        or self.antiside==Matrix[i+{m}][j+{n}][0] 
-        and limi<=i+{m}<=limj):
-            x,y=MTP(i+{m},j+{n})
-            print(x,y)
-            self.l.append((x,y))
-        '''
-        exec(a.format(m=1,n=1))
-        exec(a.format(m=-1,n=-1))
-        exec(a.format(m=-1,n=1))
-        exec(a.format(m=1,n=-1))
+            case 0|1|2:
+                limj = 2
+                limi = 0
+            case 7|8|9:
+                limj = 9
+                limi = 7
+        move=[(1,1),(-1,-1),(-1,1),(1,-1)]
+        for m,n in move:
+             new_i, new_j = i + m, j + n
+             if 0 <=new_i< Matrix.shape[0] and 0 <= new_j < Matrix.shape[1]:
+                target = Matrix[new_i][new_j]
+                if ((target not in Dict 
+        or self.antiside==target[0]) 
+        and (limi<=new_i<=limj)):
+                    x,y=MTP(new_i,new_j)
+                    print(x,y)
+                    self.l.append((x,y))
         return self
+    
     def ge(self,position:tuple):
         x,y=PF(position)
         i,j=PTM(x,y)
