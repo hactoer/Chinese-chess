@@ -43,28 +43,23 @@ class Runner:
         self.side='b'
         self.antiside='r'
         return self
-    def ch(self,position:tuple):
+    def ch(self,position:tuple):#判斷棋子的位置
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
-        a='''
-        while Matrix[i][j] in Dict:
-            i+={m}
-            j+={n}
-            x,y=MTP(i,j)
-            print(x,y)
-            self.l.append((x,y))
-        if ('self.antiside'==Matrix[i+{m}][j+{n}][0] 
-        and {s}):
-            x,y=MTP(i+{m},j+{n})
-            print(x,y)
-            self.l.append((x,y))
-           
-        '''
-        exec(a.format(m=1,n=0,s='i+1<=9'))
-        exec(a.format(m=-1,n=0,s='i-1>=0'))
-        exec(a.format(m=0,n=1,s='j+1<=8'))
-        exec(a.format(m=0,n=-1,s='j-1>=0'))
+        move=[(1,0,i+1<=9),(-1,0,i-1>=0),(0,1,j+1<=8),(0,-1,j-1>=0)]
+        for m,n,s in move:
+            while Matrix[i][j] in Dict:
+                i+={m}
+                j+={n}
+                x,y=MTP(i,j)
+                print(x,y)
+                self.l.append((x,y))
+            if ('self.antiside'==Matrix[i+{m}][j+{n}][0] 
+            and {s}):
+                x,y=MTP(i+{m},j+{n})
+                print(x,y)
+                self.l.append((x,y))
         return self
     
     def ho(self,position:tuple):
@@ -81,49 +76,43 @@ class Runner:
             (0,-1):(d[3],d[4]),
             (-1,0):(d[2],d[3]),
             }
-        a='''
-        if Matrix[i+{m}][j+{n}] not in Dict:
-            if ((a:=Matrix[i+{m}+d2[(m,n)][0][1]][j+{n}+d2[(m,n)][0][0]]) 
-            and a[0]==self.antiside 
-            or a=='000'):
-                x,y=MTP(i+{m}+d2[(m,n)][0][1],j+{n}+d2[(m,n)][0][0])
-                print(x,y)
-                self.l.append((x,y))
-            if ((b:=Matrix[i+{m}+d2[(m,n)][1][1]][j+{n}+d2[(m,n)][1][0]]) 
-            and b[0]==self.antiside 
-            or b=='000'):
-                x,y=MTP(i+{m}+d2[(m,n)][1][1],j+{n}+d2[(m,n)][1][0])
-                print(x,y)
-                self.l.append((x,y))
-        '''
-        exec(a.format(m=1,n=0))
-        exec(a.format(m=-1,n=0))
-        exec(a.format(m=0,n=1))
-        exec(a.format(m=0,n=-1))
+        move=[(1,0),(-1,0),(0,1),(0,-1)]
+        for m,n in move:
+            
+            if Matrix[i+{m}][j+{n}] not in Dict:
+                if ((a:=Matrix[i+{m}+d2[(m,n)][0][1]][j+{n}+d2[(m,n)][0][0]]) 
+                and a[0]==self.antiside 
+                or a=='000'):
+                    x,y=MTP(i+{m}+d2[(m,n)][0][1],j+{n}+d2[(m,n)][0][0])
+                    print(x,y)
+                    self.l.append((x,y))
+                if ((b:=Matrix[i+{m}+d2[(m,n)][1][1]][j+{n}+d2[(m,n)][1][0]]) 
+                and b[0]==self.antiside 
+                or b=='000'):
+                    x,y=MTP(i+{m}+d2[(m,n)][1][1],j+{n}+d2[(m,n)][1][0])
+                    print(x,y)
+                    self.l.append((x,y))
+
         return self
     
     def el(self,position:tuple):
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
-        a='''
-        lim:int
-        match i:
-            case 0|1|2|3|4:
-                lim=5
-            case 5|6|7|8|9:
-                lim=9
-        if Matrix[i+{m}][j+{n}] not in Dict:
-            if ((s:=Matrix[i+{m}+{m}][j+{n}+{n}]) not in Dict 
-            or s[0]==self.antiside 
-            and lim-5<=i+{m}+{m}<=lim):
-                x,y=MTP(i+{m}+{m},j+{n}+{n})
-                self.l.append((x,y))       
-        '''
-        exec(a.format(m=1,n=0))
-        exec(a.format(m=-1,n=0))
-        exec(a.format(m=0,n=1))        
-        exec(a.format(m=0,n=-1))
+        lim=0
+        move=[(1,0),(-1,0),(0,1),(0,-1)]
+        for m,n in move:
+            match i:
+                case 0|1|2|3|4:
+                    lim=5
+                case 5|6|7|8|9:
+                    lim=9
+            if Matrix[i+{m}][j+{n}] not in Dict:
+                if ((s:=Matrix[i+{m}+{m}][j+{n}+{n}]) not in Dict 
+                or s[0]==self.antiside 
+                and lim-5<=i+{m}+{m}<=lim):
+                    x,y=MTP(i+{m}+{m},j+{n}+{n})
+                    self.l.append((x,y))      
         return self
     
     def ad(self,position:tuple):  #士
@@ -154,7 +143,14 @@ class Runner:
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
-        a='''
+        move=[(1,0),(-1,0),(0,1),(0,-1)]
+        if self.antiside=="b":
+            lim_i=range(7,10)
+        elif self.antiside=="r":
+            lim_i=range(0,3)
+        else:
+            
+            
         match floor(i/5):
             case 0:
                 limj=(...)
@@ -165,23 +161,21 @@ class Runner:
         if (Matrix[i+{m}][j+{n}] not in Dict
         or self.antiside==Matrix[i+{m}][j+{n}][0]):
             ...
-        '''
         return self
     def ca(self,position:tuple):
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
-        a='''
+        move=[(1,0),(-1,0),(0,1),(0,-1)]
         while Matrix[i][j] not in Dict:
             i+={m}
             j+={n}
             x,y=MTP(i,j)
             print(x,y)
             self.l.append((x,y))
-        while 0=<i<=9 and 0=<j<=8: 
+        while 0<=i<=9 and 0<=j<=8: 
             i+={m}
             j+={n}         
-    '''
         return self
     def so(self,position:tuple):
         ...
