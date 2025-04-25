@@ -19,7 +19,7 @@ def LoadING():
         pygame.draw.rect(
             screen,
             WHITE,
-            (0.2,ScreenSize[1]//1.5+30,ScreenSize[0]*i/100,50)
+            (0.2,ScreenSize[1]//1.5+30,ScreenSize[0]*i/100,20)
             )
         time.sleep(random.randint(1,10)*0.01)
         pygame.time.Clock().tick(60)
