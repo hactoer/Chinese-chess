@@ -33,8 +33,10 @@ def MainOption():
         pygame.time.Clock().tick(60)
         mp=pygame.mouse.get_pos()
         print(mp,mode,sep=';')
-        @Ckscreeninit(mp)
+        @Ckscreeninit
         def screeninit(mode):
+            nonlocal mp
+            mp=(0,0) if mp==None else mp
             global a
             pygame.display.set_caption(f'Chinese Chess {version}+::({mode})')
             screen.fill(BACKGROUND)
@@ -47,6 +49,7 @@ def MainOption():
         for events in pygame.event.get():
             if events.type==pygame.MOUSEBUTTONDOWN:
                 screeninit(mode)
+                Run=False
             if events.type==pygame.QUIT:
                 Run=False
     ButtonGroup.kill()
