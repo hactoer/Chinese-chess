@@ -2,7 +2,7 @@ import pygame
 from ui.screen import *
 def main():
     pygame.init()
-    LoadING()
+    # LoadING()
     MainOption()
     InitGame()
     pygame.quit()

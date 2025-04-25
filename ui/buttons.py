@@ -1,10 +1,11 @@
 from asserts.images.images import *
 import pygame
 from tool.Constants import *
+from src.sprite import screen
 mode=None
 class Button(pygame.sprite.Sprite):
-    def __init__(self,image:pygame.surface,position:tuple,mode):
-        pygame.sprite.Sprite().__init__(self)
+    def __init__(self,image:pygame.Surface,position:tuple,mode):
+        super().__init__()
         self.image=image
         self.Originalimage=image
         self.rect=self.image.get_rect()
@@ -17,50 +18,57 @@ class Button(pygame.sprite.Sprite):
     def update(self,mousepos):
         global mode
         is_hovered = (
-            self.rect.left - 10 <= mousepos[0] <= self.rect.right + 10 |
-            self.rect.top + 10 <= mousepos[1] <= self.rect.bottom - 10
+            self.rect.left-15 < mousepos[0] < self.rect.right+15 and
+            self.rect.top-15 < mousepos[1] < self.rect.bottom+15
         )
-        if not self.hover & is_hovered:
-            self.image=pygame.transform.scale2x(self.image)
-            self.rect.center=self.position
-        elif not is_hovered & self.hover:
+        if is_hovered and not self.hover:
+            self.image=pygame.transform.scale2x(self.Originalimage)
+            self.rect.center=(self.position[0]-25,self.position[1])
+            self.hover=True
+        elif self.hover and not is_hovered:
             self.image=self.Originalimage
             self.rect.center=self.position
+            self.hover=False
+    def builder(self,screen:pygame.Surface):
+        screen.blit(self.image,self.rect)
     def Clicked(self,mp):
+        mp=(0,0) if mp is None else mp
         if self.rect.collidepoint(*mp):
             global mode
-            self.mode=mode
+            mode=self.mode
+    def kill(self):
+        super().kill()
 class TP(Button):
     def __init__(self):
         super().__init__(TwoPlayerButton,
-                         (ScreenSize[0]//2-40,ScreenSize[1]//2-30),
+                         (ScreenSize[0]//2-5,ScreenSize[1]//2-30),
                          'TwoPlayer')
-    def update(self,mousepos):
-        super().update(mousepos)
-    def kill(self):
-        super().kill()
-    def Clicked(self,mp):
-        super().Clicked(mp)
 class AI(Button):
     def __init__(self):
         super().__init__(AIPlayerButton,
-                         (ScreenSize[0]//2-40,ScreenSize[1]//2+120),
+                         (ScreenSize[0]//2-5,ScreenSize[1]//2+120),
                          'AIPlayer')
-    def update(self,mousepos):
-        super().update(mousepos)
-    def kill(self):
-        super().kill()
-    def Clicked(self,mp):
-        super().Clicked(mp)
 tp=TP()
 ai=AI()
 ButtonGroup=pygame.sprite.Group()
 ButtonGroup.add(tp)
 ButtonGroup.add(ai)
-def Ckscreeninit(f):
-    def rapper(mp:tuple):
-        global mode
-        tp.Clicked(mp)
-        ai.Clicked(mp)
-        f(mode)
-    return rapper
+class BGfunction:
+    def __init__(self):
+        self.group=(tp,ai)
+    def builder(self):
+        for i in self.group:
+            i.builder(screen)
+    def kill(self):
+        for i in self.group:
+            i.kill()
+    def Clicked(self,f):
+        def wrapper(mp):
+            global mode
+            print(mode)
+            for i in self.group:
+                i.Clicked(mp)
+        return wrapper
+BGfunction=BGfunction()  
+
+
