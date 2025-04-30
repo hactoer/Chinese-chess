@@ -18,12 +18,12 @@ class Button(pygame.sprite.Sprite):
     def update(self,mousepos):
         global mode
         is_hovered = (
-            self.rect.left-15 < mousepos[0] < self.rect.right+15 and
-            self.rect.top-15 < mousepos[1] < self.rect.bottom+15
+            self.rect.left-20 < mousepos[0] < self.rect.right+20 and
+            self.rect.top-20 < mousepos[1] < self.rect.bottom+20
         )
         if is_hovered and not self.hover:
             self.image=pygame.transform.scale2x(self.Originalimage)
-            self.rect.center=(self.position[0]-25,self.position[1])
+            self.rect.center=(self.position[0]-50,self.position[1])
             self.hover=True
         elif self.hover and not is_hovered:
             self.image=self.Originalimage
@@ -68,6 +68,12 @@ class BGfunction:
             print(mode)
             for i in self.group:
                 i.Clicked(mp)
+            for event in pygame.event.get():
+                match event:
+                    case pygame.MOUSEBUTTONDOWN:
+                        f(mode)
+                    case pygame.QUIT:
+                        pygame.quit()
         return wrapper
 BGfunction=BGfunction()  
 
