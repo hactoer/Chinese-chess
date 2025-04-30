@@ -36,6 +36,10 @@ Dict={
             'bso':bsoiders,
     }
 class Runner:
+    def __init__(self):
+        self.side=None
+        self.antiside=None
+        
     def red(self):
         self.side='r'
         self.antiside='b'
@@ -44,23 +48,24 @@ class Runner:
         self.side='b'
         self.antiside='r'
         return self
-    def ch(self,position:tuple):#判斷棋子的位置
+    
+    def ch(self,position:tuple):#車
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
         move=[(1,0,i+1<=9),(-1,0,i-1>=0),(0,1,j+1<=8),(0,-1,j-1>=0)]
         for m,n,s in move:
-            while Matrix[i][j] in Dict:
+            while 0<=i+m<=9 and 0<=j+n<=8 and Matrix[i][j] in Dict:
                 i+=m
                 j+=n
                 x,y=MTP(i,j)
                 print(x,y)
                 self.l.append((x,y))
-            if ('self.antiside'==Matrix[i+m][j+n][0] 
-            and s):
-                x,y=MTP(i+m,j+n)
-                print(x,y)
-                self.l.append((x,y))
+                if (self.antiside==Matrix[i+m][j+n][0] 
+                and s):
+                    x,y=MTP(i+m,j+n)
+                    print(x,y)
+                    self.l.append((x,y))
         return self
     
     def ho(self,position:tuple):#馬
@@ -81,13 +86,13 @@ class Runner:
         for m,n in move:
             
             if Matrix[i+m][j+n] not in Dict:
-                if ((a:=Matrix[i+{m}+d2[(m,n)][0][1]][j+{n}+d2[(m,n)][0][0]]) 
+                if ((a:=Matrix[i+m+d2[(m,n)][0][1]][j+n+d2[(m,n)][0][0]]) 
                 and a[0]==self.antiside 
                 or a=='000'):
-                    x,y=MTP(i+{m}+d2[(m,n)][0][1],j+{n}+d2[(m,n)][0][0])
+                    x,y=MTP(i+m+d2[(m,n)][0][1],j+n+d2[(m,n)][0][0])
                     print(x,y)
                     self.l.append((x,y))
-                if ((b:=Matrix[i+m+d2[(m,n)][1][1]][j+{n}+d2[(m,n)][1][0]]) 
+                if ((b:=Matrix[i+m+d2[(m,n)][1][1]][j+n+d2[(m,n)][1][0]]) 
                 and b[0]==self.antiside 
                 or b=='000'):
                     x,y=MTP(i+m+d2[(m,n)][1][1],j+n+d2[(m,n)][1][0])
@@ -103,30 +108,29 @@ class Runner:
         lim=0
         move=[(1,0),(-1,0),(0,1),(0,-1)]
         for m,n in move:
-            match i:
-                case 0|1|2|3|4:
-                    lim=5
-                case 5|6|7|8|9:
-                    lim=9
-            if Matrix[i+m][j+n] not in Dict:
-                if ((s:=Matrix[i+m+m][j+n+n]) not in Dict 
-                or s[0]==self.antiside 
-                and lim-5<=i+m+m<=lim):
-                    x,y=MTP(i+m+m,j+n+n)
-                    self.l.append((x,y))      
+            if i <= 4:
+                lim = 5
+            else:
+                lim = 9
+            if 0<=i<=9 and 0<=j<=8:
+                if Matrix[i+m][j+n] not in Dict:
+                    if ((s:=Matrix[i+m+m][j+n+n]) not in Dict 
+                    or s[0]==self.antiside 
+                    and lim-5<=i+m+m<=lim):
+                        x,y=MTP(i+m+m,j+n+n)
+                        self.l.append((x,y))      
         return self
     
     def ad(self,position:tuple):  #士
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
-        match i:
-            case 0|1|2:
-                limj = 2
-                limi = 0
-            case 7|8|9:
-                limj = 9
-                limi = 7
+        if self.antiside=="r":
+            limj = 2
+            limi = 0
+        elif self.antiside=="b":
+            limj = 9
+            limi = 7
         move=[(1,1),(-1,-1),(-1,1),(1,-1)]
         for m,n in move:
              new_i, new_j = i + m, j + n
@@ -165,20 +169,18 @@ class Runner:
         i,j=PTM(x,y)
         self.l=[]
         move=[(1,0),(-1,0),(0,1),(0,-1)]
-        while Matrix[i][j] not in Dict:
-            i+=m
-            j+=n
-            x,y=MTP(i,j)
-            print(x,y)
-            self.l.append((x,y))
-        while 0<=i<=9 and 0<=j<=8: 
-            i+=m
-            j+=n         
-        return self
+        for m,n in move:
+            while Matrix[i][j] not in Dict:
+                i+=m
+                j+=n
+                x,y=MTP(i,j)
+                print(x,y)
+                self.l.append((x,y))
+            while 0<=i<=9 and 0<=j<=8: 
+                i+=m
+                j+=n         
+            return self
     def so(self,position:tuple):#兵
-        ...
-        return self
-    def ch(self,position:tuple):#車
         ...
         return self
     
