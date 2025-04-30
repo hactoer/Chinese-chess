@@ -30,29 +30,26 @@ def MainOption():
     screen.fill(BACKGROUND)
     Run=True
     while Run:
+        screen.fill(BACKGROUND)
         pygame.time.Clock().tick(60)
         mp=pygame.mouse.get_pos()
         print(mp,mode,sep=';')
-        @Ckscreeninit
-        def screeninit(mode):
+        @BGfunction.Clicked
+        def screeninit():
+            print('screeninit')
             nonlocal mp
-            mp=(0,0) if mp==None else mp
+            global mode
             global a
-            pygame.display.set_caption(f'Chinese Chess {version}+::({mode})')
+            pygame.display.set_caption(f'Chinese Chess {version}::({mode})')
             screen.fill(BACKGROUND)
             screen.blit(chessboard,(BoundaryLength,0))
             a=True
+        BGfunction.builder()
         ButtonGroup.update(mp)
-        ButtonGroup.draw(screen)
         pygame.display.flip()
         pygame.display.update()
-        for events in pygame.event.get():
-            if events.type==pygame.MOUSEBUTTONDOWN:
-                screeninit(mode)
-                Run=False
-            if events.type==pygame.QUIT:
-                Run=False
-    ButtonGroup.kill()
+        screeninit()
+    BGfunction.kill()
 def InitGame():
     global a
     while a:
