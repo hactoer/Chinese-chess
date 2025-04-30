@@ -5,6 +5,7 @@ import pygame
 from asserts.images.images import *
 from tool.Constants import r
 from math import floor
+from tool.dfexception import *
 screen=pygame.display.set_mode(ScreenSize)
 Matrix=np.array([
         ['rch','rho','rel','rad','rge','rad','rel','rho','rch'],
@@ -50,19 +51,19 @@ class Runner:
         move=[(1,0,i+1<=9),(-1,0,i-1>=0),(0,1,j+1<=8),(0,-1,j-1>=0)]
         for m,n,s in move:
             while Matrix[i][j] in Dict:
-                i+={m}
-                j+={n}
+                i+=m
+                j+=n
                 x,y=MTP(i,j)
                 print(x,y)
                 self.l.append((x,y))
-            if ('self.antiside'==Matrix[i+{m}][j+{n}][0] 
-            and {s}):
-                x,y=MTP(i+{m},j+{n})
+            if ('self.antiside'==Matrix[i+m][j+n][0] 
+            and s):
+                x,y=MTP(i+m,j+n)
                 print(x,y)
                 self.l.append((x,y))
         return self
     
-    def ho(self,position:tuple):
+    def ho(self,position:tuple):#馬
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
@@ -79,23 +80,23 @@ class Runner:
         move=[(1,0),(-1,0),(0,1),(0,-1)]
         for m,n in move:
             
-            if Matrix[i+{m}][j+{n}] not in Dict:
+            if Matrix[i+m][j+n] not in Dict:
                 if ((a:=Matrix[i+{m}+d2[(m,n)][0][1]][j+{n}+d2[(m,n)][0][0]]) 
                 and a[0]==self.antiside 
                 or a=='000'):
                     x,y=MTP(i+{m}+d2[(m,n)][0][1],j+{n}+d2[(m,n)][0][0])
                     print(x,y)
                     self.l.append((x,y))
-                if ((b:=Matrix[i+{m}+d2[(m,n)][1][1]][j+{n}+d2[(m,n)][1][0]]) 
+                if ((b:=Matrix[i+m+d2[(m,n)][1][1]][j+{n}+d2[(m,n)][1][0]]) 
                 and b[0]==self.antiside 
                 or b=='000'):
-                    x,y=MTP(i+{m}+d2[(m,n)][1][1],j+{n}+d2[(m,n)][1][0])
+                    x,y=MTP(i+m+d2[(m,n)][1][1],j+n+d2[(m,n)][1][0])
                     print(x,y)
                     self.l.append((x,y))
 
         return self
     
-    def el(self,position:tuple):
+    def el(self,position:tuple):#象
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
@@ -107,11 +108,11 @@ class Runner:
                     lim=5
                 case 5|6|7|8|9:
                     lim=9
-            if Matrix[i+{m}][j+{n}] not in Dict:
-                if ((s:=Matrix[i+{m}+{m}][j+{n}+{n}]) not in Dict 
+            if Matrix[i+m][j+n] not in Dict:
+                if ((s:=Matrix[i+m+m][j+n+n]) not in Dict 
                 or s[0]==self.antiside 
-                and lim-5<=i+{m}+{m}<=lim):
-                    x,y=MTP(i+{m}+{m},j+{n}+{n})
+                and lim-5<=i+m+m<=lim):
+                    x,y=MTP(i+m+m,j+n+n)
                     self.l.append((x,y))      
         return self
     
@@ -139,7 +140,7 @@ class Runner:
                     self.l.append((x,y))
         return self
     
-    def ge(self,position:tuple):
+    def ge(self,position:tuple):#將
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
@@ -149,37 +150,38 @@ class Runner:
         elif self.antiside=="r":
             lim_i=range(0,3)
         else:
-            
-            
-        match floor(i/5):
-            case 0:
-                limj=(...)
-                limi=(...)
-            case 1:
-                limj=(...)
-                limi=(...)
-        if (Matrix[i+{m}][j+{n}] not in Dict
-        or self.antiside==Matrix[i+{m}][j+{n}][0]):
-            ...
+            raise OutSideTheLimit('not in chessboard')
+        lim_j=range(3,6)
+        for m,n in move:
+            new_i=i+m
+            new_j=j+n
+            if new_i in lim_i and new_j in lim_j:
+                if (Matrix[new_i][new_j] not in Dict
+                or self.antiside==Matrix[new_i][new_j][0]):
+                    self.l.append((new_i,new_j))
         return self
-    def ca(self,position:tuple):
+    def ca(self,position:tuple):#砲
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
         move=[(1,0),(-1,0),(0,1),(0,-1)]
         while Matrix[i][j] not in Dict:
-            i+={m}
-            j+={n}
+            i+=m
+            j+=n
             x,y=MTP(i,j)
             print(x,y)
             self.l.append((x,y))
         while 0<=i<=9 and 0<=j<=8: 
-            i+={m}
-            j+={n}         
+            i+=m
+            j+=n         
         return self
-    def so(self,position:tuple):
+    def so(self,position:tuple):#兵
         ...
         return self
+    def ch(self,position:tuple):#車
+        ...
+        return self
+    
     def PrePrint(self):
         for li in self.l:
             screen.blit(preon,li)
