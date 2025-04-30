@@ -36,9 +36,6 @@ Dict={
             'bso':bsoiders,
     }
 class Runner:
-    def __init__(self):
-        self.side=None
-        self.antiside=None
         
     def red(self):
         self.side='r'
