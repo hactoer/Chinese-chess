@@ -6,7 +6,9 @@ from src.sprite import screen
 from .buttons import *
 import time
 import random
-def LoadING():
+from typing import Literal
+def LoadING(skip=False):
+    if skip:return
     pygame.display.set_caption(f'Chinese Chess {version}')
     screen.fill((BLACK))
     pygame.font.init()
@@ -24,22 +26,11 @@ def LoadING():
         time.sleep(random.randint(1,10)*0.01)
         pygame.time.Clock().tick(60)
         pygame.display.flip()
-def MainOption():
-    global mode
-    pygame.display.set_caption(f'Chinese Chess {version}')
-    screen.fill(BACKGROUND)
-    Run=True
-    while Run:
-        screen.fill(BACKGROUND)
-        pygame.time.Clock().tick(60)
-        mp=pygame.mouse.get_pos()
-        BGfunction.BC()
-        print(mp,mode,sep=';')
-        BGfunction.builder()
-        ButtonGroup.update(mp)
-        pygame.display.flip()
-        pygame.display.update()
-    BGfunction.kill()
+def MainOption(instantmode:Literal['TwoPlayer','AIPlayer']):
+    global mode,a
+    a=False
+    with ButtonCentre() as bc:
+        screen.fill()
 def InitGame():
     global a
     while a:

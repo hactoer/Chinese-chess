@@ -13,8 +13,6 @@ class Button(pygame.sprite.Sprite):
         self.rect.center=position
         self.mode=mode
         self.hover=False
-    def kill(self):
-        pygame.sprite.Sprite.kill(self)
     def update(self,mousepos):
         global mode
         is_hovered = (
@@ -29,50 +27,37 @@ class Button(pygame.sprite.Sprite):
             self.image=self.Originalimage
             self.rect.center=self.position
             self.hover=False
-    def builder(self,screen:pygame.Surface):
-        screen.blit(self.image,self.rect)
-    def Clicked(self,mp):
-        mp=(0,0) if mp is None else mp
-        if self.rect.collidepoint(*mp):
+class ButtonCentre:
+    def __init__(self):
+        self.image1=TwoPlayerButton
+        self.image2=AIPlayerButton
+        self.position1=(ScreenSize[0]//2-5,ScreenSize[1]//2-30)
+        self.position2=(ScreenSize[0]//2-5,ScreenSize[1]//2+120)
+        self.modeAI='AIPlayer'
+        self.modeTP='TwoPlayer'
+    def __enter__(self):
+        self.tp=Button(
+            self.image1,
+            self.position1,
+            self.modeTP
+        )
+        self.ai=Button(
+            self.image2,
+            self.position2,
+            self.modeAI
+        )
+    def update(self,mousepos):
+        self.tp.update(mousepos)
+        self.ai.update(mousepos)
+    def clicked(self,mousepos):
+        if self.tp.rect.collidepoint(mousepos):
             global mode
-            mode=self.mode
-    def kill(self):
-        super().kill()
-class TP(Button):
-    def __init__(self):
-        super().__init__(TwoPlayerButton,
-                         (ScreenSize[0]//2-5,ScreenSize[1]//2-30),
-                         'TwoPlayer')
-class AI(Button):
-    def __init__(self):
-        super().__init__(AIPlayerButton,
-                         (ScreenSize[0]//2-5,ScreenSize[1]//2+120),
-                         'AIPlayer')
-tp=TP()
-ai=AI()
-ButtonGroup=pygame.sprite.Group()
-ButtonGroup.add(tp)
-ButtonGroup.add(ai)
-class BGfunction:
-    def __init__(self):
-        self.group=(tp,ai)
-    def builder(self):
-        for i in self.group:
-            i.builder(screen)
-    def kill(self):
-        for i in self.group:
-            i.kill()
-    async def BC(self,mp):
-        global a
-        for i in self.group:
-            i.Clicked(mp)
-            for event in pygame.event.get():
-                match event:
-                    case pygame.MOUSEBUTTONDOWN:
-                        pygame.display.set_caption(f'Chinese::{mode}')
-                        a=True
-                    case pygame.QUIT:
-                        pygame.quit()
-BGfunction=BGfunction()  
-
-
+            mode=self.tp.mode
+            return True
+        elif self.ai.rect.collidepoint(mousepos):
+            global mode
+            mode=self.ai.mode
+            return True
+        return None
+    def __exit__(self,*_):
+        return False

@@ -150,20 +150,20 @@ class Runner:
             lim_i=range(7,10)
         elif self.antiside=="r":
             lim_i=range(0,3)
-        else:
+        else:...
             
             
-        match floor(i/5):
-            case 0:
-                limj=(...)
-                limi=(...)
-            case 1:
-                limj=(...)
-                limi=(...)
-        if (Matrix[i+{m}][j+{n}] not in Dict
-        or self.antiside==Matrix[i+{m}][j+{n}][0]):
-            ...
-        return self
+        # match floor(i/5):
+        #     case 0:
+        #         limj=(...)
+        #         limi=(...)
+        #     case 1:
+        #         limj=(...)
+        #         limi=(...)
+        # if (Matrix[i+{m}][j+{n}] not in Dict
+        # or self.antiside==Matrix[i+{m}][j+{n}][0]):
+        #     ...
+        # return self
     def ca(self,position:tuple):#砲
         x,y=PF(position)
         i,j=PTM(x,y)
