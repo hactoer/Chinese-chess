@@ -176,7 +176,7 @@ class Runner:
             while 0<=i<=9 and 0<=j<=8: 
                 i+=m
                 j+=n         
-            return self
+        return self
     def so(self,position:tuple):#兵
         ...
         return self
