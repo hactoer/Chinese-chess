@@ -62,19 +62,17 @@ class BGfunction:
     def kill(self):
         for i in self.group:
             i.kill()
-    def Clicked(self,f):
-        def wrapper(mp):
-            global mode
-            print(mode)
-            for i in self.group:
-                i.Clicked(mp)
-            for event in pygame.event.get():
+    async def BC(self,mp):
+        global a
+        for i in self.group:
+            i.Clicked(mp)
+            async for event in pygame.event.get():
                 match event:
                     case pygame.MOUSEBUTTONDOWN:
-                        f(mode)
+                        pygame.display.set_caption(f'Chinese::{mode}')
+                        a=True
                     case pygame.QUIT:
                         pygame.quit()
-        return wrapper
 BGfunction=BGfunction()  
 
 
