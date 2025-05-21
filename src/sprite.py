@@ -149,8 +149,6 @@ class Runner:
         elif self.antiside=="r":
             lim_i=range(0,3)
         else:
-            
-            
         match floor(i/5):
             case 0:
                 limj=(...)

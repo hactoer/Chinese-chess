@@ -66,7 +66,7 @@ class BGfunction:
         global a
         for i in self.group:
             i.Clicked(mp)
-            async for event in pygame.event.get():
+            for event in pygame.event.get():
                 match event:
                     case pygame.MOUSEBUTTONDOWN:
                         pygame.display.set_caption(f'Chinese::{mode}')
