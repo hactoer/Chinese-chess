@@ -67,6 +67,7 @@ def MainOption(instantmode:Literal['TwoPlayer','AIPlayer']=None):
 def InitGame():
     global a
     while a:
+        screen.fill(BACKGROUND)
         screen.blit(chessboard,(12,8))
         center.init()
         fps=60
