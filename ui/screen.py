@@ -2,7 +2,7 @@ import pygame
 from asserts.images.images import * 
 from INIT import version
 from tool.Constants import *
-from src.sprite import screen
+from src.sprite import screen,center
 from .buttons import *
 import time
 import random
@@ -46,7 +46,7 @@ def MainOption(instantmode:Literal['TwoPlayer','AIPlayer']=None):
                         Run=False
                     case pygame.MOUSEBUTTONDOWN:
                         bc.clicked(mp) if mp else None
-                        
+
             mp=pygame.mouse.get_pos()
             print(mp)
             bc.update(mp)
@@ -67,6 +67,8 @@ def MainOption(instantmode:Literal['TwoPlayer','AIPlayer']=None):
 def InitGame():
     global a
     while a:
+        screen.blit(chessboard,(12,8))
+        center.init()
         fps=60
         clock=pygame.time.Clock()
         clock.tick(fps)
