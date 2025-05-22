@@ -72,12 +72,14 @@ def InitGame():
         fps=60
         clock=pygame.time.Clock()
         clock.tick(fps)
-        mospos=pygame.mouse.get_pos()
-        print(mospos)                    
+                      
         for events in pygame.event.get():
             if events.type==pygame.MOUSEBUTTONDOWN:
                 mospos=pygame.mouse.get_pos()
+                center.check(mospos)
             if events.type==pygame.QUIT:
                 a=False
+        mospos=pygame.mouse.get_pos()
+        print(mospos)    
         pygame.display.flip()
         pygame.display.update()
