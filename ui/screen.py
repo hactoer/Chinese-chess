@@ -2,13 +2,15 @@ import pygame
 from asserts.images.images import * 
 from INIT import version
 from tool.Constants import *
-from src.sprite import screen
+from src.sprite import screen,center
 from .buttons import *
 import time
 import random
-def LoadING():
+from typing import Literal
+def LoadING(skip=False):
+    if skip:return
     pygame.display.set_caption(f'Chinese Chess {version}')
-    screen.fill((BLACK))
+    screen.fill(BLACK)
     pygame.font.init()
     my_font=pygame.font.SysFont('Arial', 40)
     text=my_font.render('ProgrammerPython00', True, (WHITE))
@@ -24,25 +26,49 @@ def LoadING():
         time.sleep(random.randint(1,10)*0.01)
         pygame.time.Clock().tick(60)
         pygame.display.flip()
-def MainOption():
-    global mode
-    pygame.display.set_caption(f'Chinese Chess {version}')
-    screen.fill(BACKGROUND)
+def MainOption(instantmode:Literal['TwoPlayer','AIPlayer']=None):
+    global mode,a
+    a=False
     Run=True
+    if instantmode:
+        a=True
+        Run=False
+        pygame.display.set_caption(f'Chinese Chess {version}<{instantmode} mode>')
+        return
     while Run:
-        screen.fill(BACKGROUND)
-        pygame.time.Clock().tick(60)
-        mp=pygame.mouse.get_pos()
-        BGfunction.BC()
-        print(mp,mode,sep=';')
-        BGfunction.builder()
-        ButtonGroup.update(mp)
-        pygame.display.flip()
-        pygame.display.update()
-    BGfunction.kill()
+        with ButtonCentre() as bc:
+            screen.fill(BACKGROUND)
+            pygame.display.set_caption(f'Chinese Chess {version}') 
+            for event in pygame.event.get():
+                match event.type:
+                    case pygame.QUIT:
+                        a=False
+                        Run=False
+                    case pygame.MOUSEBUTTONDOWN:
+                        bc.clicked(mp) if mp else None
+
+            mp=pygame.mouse.get_pos()
+            print(mp)
+            bc.update(mp)
+            screen.blit(bc.tp.image,bc.tp.rect)
+            screen.blit(bc.ai.image,bc.ai.rect)
+            pygame.display.flip()
+            pygame.display.update()
+            if mode:
+                a=True
+                Run=False
+                match mode:
+                    case 'AIPlayer':
+                        print('AI')
+                    case 'TwoPlayer':
+                        print('TP')
+                pygame.display.set_caption(f'Chinese Chess {version}<{mode} mode>')
+                    
 def InitGame():
     global a
     while a:
+        screen.blit(chessboard,(12,8))
+        center.init()
         fps=60
         clock=pygame.time.Clock()
         clock.tick(fps)

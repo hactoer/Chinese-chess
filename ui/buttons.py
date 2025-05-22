@@ -13,8 +13,7 @@ class Button(pygame.sprite.Sprite):
         self.rect.center=position
         self.mode=mode
         self.hover=False
-    def kill(self):
-        pygame.sprite.Sprite.kill(self)
+        self.is_hovered=None
     def update(self,mousepos):
         global mode
         is_hovered = (
@@ -25,54 +24,45 @@ class Button(pygame.sprite.Sprite):
             self.image=pygame.transform.scale2x(self.Originalimage)
             self.rect.center=(self.position[0]-50,self.position[1])
             self.hover=True
+            yield 1
         elif self.hover and not is_hovered:
             self.image=self.Originalimage
             self.rect.center=self.position
             self.hover=False
-    def builder(self,screen:pygame.Surface):
-        screen.blit(self.image,self.rect)
-    def Clicked(self,mp):
-        mp=(0,0) if mp is None else mp
-        if self.rect.collidepoint(*mp):
-            global mode
-            mode=self.mode
-    def kill(self):
-        super().kill()
-class TP(Button):
+            yield 0
+class ButtonCentre:
     def __init__(self):
-        super().__init__(TwoPlayerButton,
-                         (ScreenSize[0]//2-5,ScreenSize[1]//2-30),
-                         'TwoPlayer')
-class AI(Button):
-    def __init__(self):
-        super().__init__(AIPlayerButton,
-                         (ScreenSize[0]//2-5,ScreenSize[1]//2+120),
-                         'AIPlayer')
-tp=TP()
-ai=AI()
-ButtonGroup=pygame.sprite.Group()
-ButtonGroup.add(tp)
-ButtonGroup.add(ai)
-class BGfunction:
-    def __init__(self):
-        self.group=(tp,ai)
-    def builder(self):
-        for i in self.group:
-            i.builder(screen)
-    def kill(self):
-        for i in self.group:
-            i.kill()
-    async def BC(self,mp):
-        global a
-        for i in self.group:
-            i.Clicked(mp)
-            for event in pygame.event.get():
-                match event:
-                    case pygame.MOUSEBUTTONDOWN:
-                        pygame.display.set_caption(f'Chinese::{mode}')
-                        a=True
-                    case pygame.QUIT:
-                        pygame.quit()
-BGfunction=BGfunction()  
-
-
+        self.image1=TwoPlayerButton
+        self.image2=AIPlayerButton
+        self.position1=(ScreenSize[0]//2-5,ScreenSize[1]//2-30)
+        self.position2=(ScreenSize[0]//2-5,ScreenSize[1]//2+120)
+        self.modeAI='AIPlayer'
+        self.modeTP='TwoPlayer'
+    def __enter__(self):
+        self.tp=Button(
+            self.image1,
+            self.position1,
+            self.modeTP
+        )
+        self.ai=Button(
+            self.image2,
+            self.position2,
+            self.modeAI
+        )
+        return self
+    def update(self,mousepos):
+        self.tp.update(mousepos)
+        self.ai.update(mousepos)
+    def clicked(self,mp):
+        global mode
+        self.tp.is_hovered=yield from self.tp.update(mp)
+        self.ai.is_hovered=yield from self.ai.update(mp)
+        if self.tp.is_hovered:
+            mode=self.tp.mode
+        elif self.ai.is_hovered:
+            mode=self.ai.mode
+        return None
+    def __exit__(self,*_):
+        self.tp.kill()
+        self.ai.kill()
+        return False
