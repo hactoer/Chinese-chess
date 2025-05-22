@@ -50,25 +50,19 @@ class Runner:
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
-        move=[(1,0),(-1,0),(0,1),(0,-1)]
-        for m,n in move:
-            new_i=i+m
-            new_j=j+n
-            while 0<=new_i<=9 and 0<=new_j<=8:
+        move=[(1,0,i+1<=9),(-1,0,i-1>=0),(0,1,j+1<=8),(0,-1,j-1>=0)]
+        for m,n,s in move:
+            while 0<=i+m<=9 and 0<=j+n<=8 and Matrix[i][j] in Dict:
+                i+=m
+                j+=n
                 x,y=MTP(i,j)
-                piece = Matrix[new_i][new_j]
-                if piece == '000':               # 空格，可以走
-                    x, y = MTP(new_i, new_j)
-                    self.l.append((x, y))
-                elif piece[0] == self.antiside:  # 敵方棋子，可以吃
-                    x, y = MTP(new_i, new_j)
-                    self.l.append((x, y))
-                    break                        # 吃完不能繼續走
-                else:                            # 是己方棋子，不能走
-                    break 
-                new_i+=m
-                new_j+=n
-                
+                print(x,y)
+                self.l.append((x,y))
+                if (self.antiside==Matrix[i+m][j+n][0] 
+                and s):
+                    x,y=MTP(i+m,j+n)
+                    print(x,y)
+                    self.l.append((x,y))
         return self
     
     def ho(self,position:tuple):#馬
@@ -108,25 +102,20 @@ class Runner:
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
-        move=[(1,1),(-1,1),(1,-1),(-1,-1)]
+        lim=0
+        move=[(1,0),(-1,0),(0,1),(0,-1)]
         for m,n in move:
-            # if i <= 4:
-            #     lim = 5
-            # else:
-            #     lim = 9
-            detect_i,detect_j=i+m,j+n
-            new_i,new_j=i+2*m,j+2*n
-            if 0<=new_i<=9 and 0<=new_j<=8:
-                if Matrix[detect_i][detect_j]=="000":     #沒被塞象眼
-                    if (self.antiside == 'r' and new_i <= 4 or 
-                        self.antiside == 'b' and new_i >= 5):
-                        if (Matrix[new_i][new_j]=="000" 
-                        or Matrix[new_i][new_j][0]==self.antiside): #空or敵對
-                    # if ((s:=Matrix[new_i][new_j]) =="000"
-                    # or s[0]==self.antiside 
-                    # and lim-5<=new_i<=lim):
-                            x,y=MTP(new_i,new_j)
-                            self.l.append((x,y))      
+            if i <= 4:
+                lim = 5
+            else:
+                lim = 9
+            if 0<=i<=9 and 0<=j<=8:
+                if Matrix[i+m][j+n] not in Dict:
+                    if ((s:=Matrix[i+m+m][j+n+n]) not in Dict 
+                    or s[0]==self.antiside 
+                    and lim-5<=i+m+m<=lim):
+                        x,y=MTP(i+m+m,j+n+n)
+                        self.l.append((x,y))      
         return self
     
     def ad(self,position:tuple):  #士
@@ -161,76 +150,40 @@ class Runner:
             lim_i=range(7,10)
         elif self.antiside=="r":
             lim_i=range(0,3)
-        else:
-            raise OutSideTheLimit('not in chessboard')
-        lim_j=range(3,6)
-        for m,n in move:
-            new_i=i+m
-            new_j=j+n
-            if new_i in lim_i and new_j in lim_j:
-                if (Matrix[new_i][new_j] not in Dict
-                or self.antiside==Matrix[new_i][new_j][0]):
-                    self.l.append((new_i,new_j))
-        return self
+        else:...
+            
+            
+        # match floor(i/5):
+        #     case 0:
+        #         limj=(...)
+        #         limi=(...)
+        #     case 1:
+        #         limj=(...)
+        #         limi=(...)
+        # if (Matrix[i+{m}][j+{n}] not in Dict
+        # or self.antiside==Matrix[i+{m}][j+{n}][0]):
+        #     ...
+        # return self
     def ca(self,position:tuple):#砲
-        x,y=PF(position)
-        i,j=PTM(x,y)#i=y j=x
-        self.l=[]
-        move=[(1,0),(-1,0),(0,1),(0,-1)]
-        for m,n in move:
-            found_obstacle=False
-            ni=i+n
-            nj=j+m
-            while 0 <= ni <= 8 and 0 <= nj <= 9:
-                
-                if not found_obstacle:
-                    if Matrix[ni][nj]=="000":
-                        x1,y1=MTP(ni,nj)
-                        self.l.append((x1,y1))#可移動的格子
-                    else:
-                        found_obstacle=True
-                else:
-                    if Matrix[ni][nj]!="000":
-                        if self.antiside==Matrix[ni][nj][0]:
-                            
-                            x1,y1=MTP(ni,nj)
-                            self.l.append((x1,y1))
-                        break#無論能不能吃，都得暫停(因為已經找到第二個)
-                ni+=n
-                nj+=m
-                print(x,y)     
-        return self
-    def so(self,position:tuple):#兵
-        x,y=PF(position)
-        i,j=PTM(x,y)#i=y j=x
-        self.l=[]
-        
-    
         x,y=PF(position)
         i,j=PTM(x,y)
         self.l=[]
-        if self.antiside == "b":  # 黑方：往下走（+1）
-            forward = 1
-            crossed_river = i >= 5
-        elif self.antiside == "r":  # 紅方：往上走（-1）
-            forward = -1
-            crossed_river = i <= 4
-        else:
-            raise OutSideTheLimit('not in chessboard')
-        
-        new_i, new_j = i + forward, j
-        if 0 <= new_i <= 9 and 0 <= new_j <= 8:
-            target = Matrix[new_i][new_j]
-        if target == '000' or target[0] == self.antiside:
-            self.l.append(MTP(new_i, new_j))
-        if crossed_river:
-            for dj in [-1, 1]:
-                new_i, new_j = i, j + dj
-                if 0 <= new_i <= 9 and 0 <= new_j <= 8:
-                    target = Matrix[new_i][new_j]
-                    if target == '000' or target[0] == self.antiside:
-                        self.l.append(MTP(new_i, new_j))
+        move=[(1,0),(-1,0),(0,1),(0,-1)]
+        for m,n in move:
+            while Matrix[i][j] not in Dict:
+                i+=m
+                j+=n
+                x,y=MTP(i,j)
+                print(x,y)
+                self.l.append((x,y))
+            while 0<=i<=9 and 0<=j<=8: 
+                i+=m
+                j+=n         
+            return self
+    def so(self,position:tuple):#兵
+        ...
         return self
+    
     def PrePrint(self):
         for li in self.l:
             screen.blit(preon,li)
@@ -274,5 +227,6 @@ class Center:
                     Dict[m]=pygame.transform.scale(Dict[m],(r[0],r[1]))
                     screen.blit(Dict[m],mospos)
     def run(self,mospos:tuple):
+
         ...
 center=Center()
