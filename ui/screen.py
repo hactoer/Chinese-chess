@@ -10,7 +10,7 @@ from typing import Literal
 def LoadING(skip=False):
     if skip:return
     pygame.display.set_caption(f'Chinese Chess {version}')
-    screen.fill((BLACK))
+    screen.fill(BLACK)
     pygame.font.init()
     my_font=pygame.font.SysFont('Arial', 40)
     text=my_font.render('ProgrammerPython00', True, (WHITE))
@@ -26,11 +26,44 @@ def LoadING(skip=False):
         time.sleep(random.randint(1,10)*0.01)
         pygame.time.Clock().tick(60)
         pygame.display.flip()
-def MainOption(instantmode:Literal['TwoPlayer','AIPlayer']):
+def MainOption(instantmode:Literal['TwoPlayer','AIPlayer']=None):
     global mode,a
     a=False
-    with ButtonCentre() as bc:
-        screen.fill()
+    Run=True
+    if instantmode:
+        a=True
+        Run=False
+        pygame.display.set_caption(f'Chinese Chess {version}<{instantmode} mode>')
+        return
+    while Run:
+        with ButtonCentre() as bc:
+            screen.fill(BACKGROUND)
+            pygame.display.set_caption(f'Chinese Chess {version}') 
+            for event in pygame.event.get():
+                match event.type:
+                    case pygame.QUIT:
+                        a=False
+                        Run=False
+                    case pygame.MOUSEBUTTONDOWN:
+                        bc.clicked(mp) if mp else None
+                        
+            mp=pygame.mouse.get_pos()
+            print(mp)
+            bc.update(mp)
+            screen.blit(bc.tp.image,bc.tp.rect)
+            screen.blit(bc.ai.image,bc.ai.rect)
+            pygame.display.flip()
+            pygame.display.update()
+            if mode:
+                a=True
+                Run=False
+                match mode:
+                    case 'AIPlayer':
+                        print('AI')
+                    case 'TwoPlayer':
+                        print('TP')
+                pygame.display.set_caption(f'Chinese Chess {version}<{mode} mode>')
+                    
 def InitGame():
     global a
     while a:
