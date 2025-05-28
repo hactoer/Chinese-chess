@@ -57,21 +57,15 @@ class Runner:
             new_j=j+n
             while 0<=new_i<=9 and 0<=new_j<=8:
                 x,y=MTP(i,j)
-                piece = Matrix[new_i][new_j]
-                if piece == '000':               # 空格，可以走
-                    x, y = MTP(new_i, new_j)
-                    self.l.append((x, y))
-                elif piece[0] == self.antiside:  # 敵方棋子，可以吃
-                    x, y = MTP(new_i, new_j)
-                    self.l.append((x, y))
-                    break                        # 吃完不能繼續走
-                else:                            # 是己方棋子，不能走
-                    break 
-                new_i+=m
-                new_j+=n
-                
+                print(x,y)
+                self.l.append((x,y))
+                if (self.antiside==Matrix[i+m][j+n][0] 
+                and s):
+                    x,y=MTP(i+m,j+n)
+                    print(x,y)
+                    self.l.append((x,y))
         return self
-
+    
     def ho(self,position:tuple):#馬
         x,y=PF(position)
         i,j=PTM(x,y)
