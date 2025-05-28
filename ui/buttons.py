@@ -24,12 +24,12 @@ class Button(pygame.sprite.Sprite):
             self.image=pygame.transform.scale2x(self.Originalimage)
             self.rect.center=(self.position[0]-50,self.position[1])
             self.hover=True
-            yield 1
+            yield True
         elif self.hover and not is_hovered:
             self.image=self.Originalimage
             self.rect.center=self.position
             self.hover=False
-            yield 0
+            yield False
 class ButtonCentre:
     def __init__(self):
         self.image1=TwoPlayerButton

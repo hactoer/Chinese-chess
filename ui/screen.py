@@ -45,8 +45,8 @@ def MainOption(instantmode:Literal['TwoPlayer','AIPlayer']=None):
                         a=False
                         Run=False
                     case pygame.MOUSEBUTTONDOWN:
-                        bc.clicked(mp) if mp else None
-
+                        print('Mouse Clicked')
+                        bc.clicked(mp)
             mp=pygame.mouse.get_pos()
             print(mp)
             bc.update(mp)
@@ -63,7 +63,6 @@ def MainOption(instantmode:Literal['TwoPlayer','AIPlayer']=None):
                     case 'TwoPlayer':
                         print('TP')
                 pygame.display.set_caption(f'Chinese Chess {version}<{mode} mode>')
-                    
 def InitGame():
     global a
     while a:
