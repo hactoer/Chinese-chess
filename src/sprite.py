@@ -37,7 +37,7 @@ Dict={
             'bso':bsoiders,
     }
 class Runner:
-
+    
     def red(self):
         self.side='r'
         self.antiside='b'
@@ -45,6 +45,30 @@ class Runner:
     def black(self):
         self.side='b'
         self.antiside='r'
+        return self
+    def el(self,position:tuple):#象
+        x,y=PF(position)
+        i,j=PTM(x,y)
+        self.l=[]
+        move=[(1,1),(-1,1),(1,-1),(-1,-1)]
+        for m,n in move:
+                        # if i <= 4:
+            #     lim = 5
+            # else:
+            #     lim = 9
+            detect_i,detect_j=i+m,j+n
+            new_i,new_j=i+2*m,j+2*n
+            if 0<=new_i<=9 and 0<=new_j<=8:
+                if Matrix[detect_i][detect_j]=="000":     #沒被塞象眼
+                    if (self.antiside == 'r' and new_i <= 4 or 
+                        self.antiside == 'b' and new_i >= 5):
+                        if (Matrix[new_i][new_j]=="000" 
+                        or Matrix[new_i][new_j][0]==self.antiside): #空or敵對
+                    # if ((s:=Matrix[new_i][new_j]) =="000"
+                    # or s[0]==self.antiside 
+                    # and lim-5<=new_i<=lim):
+                            x,y=MTP(new_i,new_j)
+                            self.l.append((x,y))      
         return self
 
     def ch(self,position:tuple):#車
