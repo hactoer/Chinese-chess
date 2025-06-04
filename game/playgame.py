@@ -7,6 +7,8 @@ def game(mode):
         while run:
             mp=pygame.mouse.get_pos()
             center.check(mp)
+            center.run(mp)  # 拖曳棋子的畫面繪製
+            pygame.display.flip()
             for event in pygame.event.get():
                 if event.type==pygame.QUIT:
                     pygame.quit()

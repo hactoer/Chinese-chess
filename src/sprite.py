@@ -199,7 +199,6 @@ class Runner:
                 else:
                     if Matrix[ni][nj]!="000":
                         if self.antiside==Matrix[ni][nj][0]:
-                            
                             x1,y1=MTP(ni,nj)
                             self.l.append((x1,y1))
                         break#無論能不能吃，都得暫停(因為已經找到第二個)
@@ -244,6 +243,9 @@ class Runner:
     def __init__(self):
         self.r=self.red()
         self.b=self.black()
+        self.dragging = False
+        self.drag_piece = None
+        self.drag_offset = (0, 0)
 runner=Runner()
 RunDict={
             'rch':runner.r.ch,
@@ -268,19 +270,29 @@ class Center:
             for j in range(len(Matrix[i])):
                 if Matrix[i][j] in Dict:
                     screen.blit(Dict[Matrix[i][j]],MTP(i,j))
-                    print(MTP(i,j),Matrix[i][j])
     def check(self,mospos:tuple):
         for events in pygame.event.get():
             if events.type==pygame.MOUSEBUTTONDOWN:
-                if (m:=Matrix[*PTM(*PF(mospos))]) != '000':
+                pos=PTM(*PF(mospos))
+                if (m:=Matrix[*pos]) != '000':
                     print(m,PTM(*PF(mospos)))
-                    Dict[m]=pygame.transform.scale(Dict[m],(1.5*r[0],1.5*r[1]))
-                    screen.blit(Dict[m],mospos)
+                    self.dragging = True                    # 設定為正在拖曳
+                    self.drag_piece = m                     # 儲存正在拖的棋子代號
+                    piece_rect = Dict[m].get_rect(topleft=mospos)
+                    self.drag_offset = (mospos[0] - piece_rect.x, mospos[1] - piece_rect.y) 
+                    # 保留移動預覽提示
                     RunDict[m](mospos).PrePrint()
                 else:
                     Dict[m]=pygame.transform.scale(Dict[m],(r[0],r[1]))
                     screen.blit(Dict[m],mospos)
-    def run(self,mospos:tuple):
-
+    def run(self, mospos: tuple):
+        if self.dragging and self.drag_piece:
+             # 計算棋子應該畫在哪裡（讓滑鼠點始終維持在棋子內部）
+            new_pos = (mospos[0] - self.drag_offset[0], mospos[1] - self.drag_offset[1])
+             # 放大棋子顯示（拖曳時常用）
+            scaled_img = pygame.transform.scale(Dict[self.drag_piece], (int(1.5*r[0]), int(1.5*r[1])))
+            # 繪製到畫面上
+            screen.blit(scaled_img, new_pos)
+    def detect_general():
         ...
 center=Center()  
