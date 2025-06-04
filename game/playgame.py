@@ -6,8 +6,9 @@ def game(mode):
     if mode=='TwoPlayer':
         while run:
             mp=pygame.mouse.get_pos()
-            center.check(mp)
             for event in pygame.event.get():
+                if event.type==pygame.MOUSEBUTTONDOWN:
+                    center.check(mp)
                 if event.type==pygame.QUIT:
                     pygame.quit()
     pygame.quit()

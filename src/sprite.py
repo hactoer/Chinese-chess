@@ -270,16 +270,15 @@ class Center:
                     screen.blit(Dict[Matrix[i][j]],MTP(i,j))
         print(Matrix)
     def check(self,mospos:tuple):
-        for events in pygame.event.get():
-            if events.type==pygame.MOUSEBUTTONDOWN:
-                if (m:=Matrix[*PTM(*PF(mospos))]) != '000':
-                    print(m,PTM(*PF(mospos)))
-                    Dict[m]=pygame.transform.scale(Dict[m],(1.5*r[0],1.5*r[1]))
-                    screen.blit(Dict[m],mospos)
-                    RunDict[m](mospos).PrePrint()
-                else:
-                    Dict[m]=pygame.transform.scale(Dict[m],(r[0],r[1]))
-                    screen.blit(Dict[m],mospos)
+        print('Mouse Clicked of Center')
+        if (m:=Matrix[*PTM(*PF(mospos))]) != '000':
+            print(m,PTM(*PF(mospos)))
+            Dict[m]=pygame.transform.scale(Dict[m],(1.5*r[0],1.5*r[1]))
+            screen.blit(Dict[m],mospos)
+            RunDict[m](mospos).PrePrint()
+        else:
+            Dict[m]=pygame.transform.scale(Dict[m],(r[0],r[1]))
+            screen.blit(Dict[m],mospos)
     def run(self,mospos:tuple):
 
         ...
