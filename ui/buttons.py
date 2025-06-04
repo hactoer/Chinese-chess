@@ -24,12 +24,12 @@ class Button(pygame.sprite.Sprite):
             self.image=pygame.transform.scale2x(self.Originalimage)
             self.rect.center=(self.position[0]-50,self.position[1])
             self.hover=True
-            yield True
+            return True
         elif self.hover and not is_hovered:
             self.image=self.Originalimage
             self.rect.center=self.position
             self.hover=False
-            yield False
+            return False
 class ButtonCentre:
     def __init__(self):
         self.image1=TwoPlayerButton
@@ -38,6 +38,7 @@ class ButtonCentre:
         self.position2=(ScreenSize[0]//2-5,ScreenSize[1]//2+120)
         self.modeAI='AIPlayer'
         self.modeTP='TwoPlayer'
+        self.SelectedMode=None
     def __enter__(self):
         self.tp=Button(
             self.image1,
@@ -53,16 +54,16 @@ class ButtonCentre:
     def update(self,mousepos):
         self.tp.update(mousepos)
         self.ai.update(mousepos)
+        return
     def clicked(self,mp):
-        global mode
-        self.tp.is_hovered=yield from self.tp.update(mp)
-        self.ai.is_hovered=yield from self.ai.update(mp)
-        if self.tp.is_hovered:
-            mode=self.tp.mode
-        elif self.ai.is_hovered:
-            mode=self.ai.mode
-        return None
+        if self.tp.hover:
+            self.SelectedMode=self.modeTP
+            print(f'Selected Mode: {self.SelectedMode}')
+        elif self.ai.hover:
+            self.SelectedMode=self.modeAI
+            print(f'Selected Mode: {self.SelectedMode}')    
     def __exit__(self,*_):
-        self.tp.kill()
-        self.ai.kill()
-        return False
+        global mode
+        print('Exiting ButtonCentre')
+        if mode:
+            return False
