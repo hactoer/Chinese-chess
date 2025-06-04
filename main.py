@@ -4,9 +4,9 @@ from game.playgame import *
 def main():
     pygame.init()
     LoadING(skip=True)
-    MainOption()
+    a=MainOption()
     InitGame()
-    two_player()
+    two_player(a)
     pygame.quit()
 if __name__=='__main__':
     main()
