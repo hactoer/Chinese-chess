@@ -6,7 +6,7 @@ def main():
     LoadING(skip=True)
     a=MainOption()
     InitGame()
-    two_player(a)
+    game(a)
     pygame.quit()
 if __name__=='__main__':
     main()
