@@ -5,8 +5,8 @@ def main():
     pygame.init()
     LoadING(skip=True)
     MainOption()
-    two_player()
     InitGame()
+    two_player()
     pygame.quit()
 if __name__=='__main__':
     main()

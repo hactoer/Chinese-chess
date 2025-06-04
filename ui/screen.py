@@ -59,6 +59,7 @@ def MainOption(instantmode:Literal['TwoPlayer','AIPlayer']=None):
                 Run=False
                 print(f'Selected Mode: {bc.SelectedMode}')
                 pygame.display.set_caption(f'Chinese Chess {version}<{bc.SelectedMode} mode>')
+                return bc.SelectedMode
 def InitGame():
     global a
     while a:
