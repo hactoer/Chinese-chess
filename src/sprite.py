@@ -268,7 +268,6 @@ class Center:
             for j in range(len(Matrix[i])):
                 if Matrix[i][j] in Dict:
                     screen.blit(Dict[Matrix[i][j]],MTP(i,j))
-                    print(MTP(i,j),Matrix[i][j])
     def check(self,mospos:tuple):
         for events in pygame.event.get():
             if events.type==pygame.MOUSEBUTTONDOWN:
