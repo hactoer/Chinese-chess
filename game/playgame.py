@@ -14,4 +14,7 @@ def game(mode):
                     center.check(mp)
                 if event.type==pygame.QUIT:
                     pygame.quit()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    center.dragging = False
+                    center.drag_piece = None
     pygame.quit()

@@ -64,24 +64,49 @@ class Runner:
                             self.l.append((x,y))      
         return self
 
-    def ch(self,position:tuple):#車
-        x,y=PF(position)
-        i,j=PTM(x,y)
-        self.l=[]
-        move=[(1,0),(-1,0),(0,1),(0,-1)]
-        for m,n in move:
-            new_i=i+m
-            new_j=j+n
-            while 0<=new_i<=9 and 0<=new_j<=8:
-                x,y=MTP(i,j)
-                print(x,y)
-                self.l.append((x,y))
-                if (self.antiside==Matrix[i+m][j+n][0] 
-                and s):
-                    x,y=MTP(i+m,j+n)
-                    print(x,y)
-                    self.l.append((x,y))
+    # def ch(self,position:tuple):#車
+    #     x,y=PF(position)
+    #     i,j=PTM(x,y)
+    #     self.l=[]
+    #     move=[(1,0),(-1,0),(0,1),(0,-1)]
+    #     for m,n in move:
+    #         new_i=i+m
+    #         new_j=j+n
+    #         while 0<=new_i<=9 and 0<=new_j<=8:
+    #             x,y=MTP(i,j)
+    #             print(x,y)
+    #             self.l.append((x,y))
+    #             if (self.antiside==Matrix[i+m][j+n][0] 
+    #             and ):
+    #                 x,y=MTP(i+m,j+n)
+    #                 print(x,y)
+    #                 self.l.append((x,y))
+    #     return self
+    def ch(self, position: tuple):  # 車
+        x, y = PF(position)
+        i, j = PTM(x, y)
+        self.l = []
+        move = [(1, 0), (-1, 0), (0, 1), (0, -1)]  # 四個方向
+
+        for m, n in move:
+            new_i = i + m
+            new_j = j + n
+            while 0 <= new_i <= 9 and 0 <= new_j <= 8:
+                piece = Matrix[new_i][new_j]
+                if piece != '000':
+                    if piece[0] == self.antiside:  # 敵方，可吃
+                        x, y = MTP(new_i, new_j)
+                        print("Eat:", x, y)
+                        self.l.append((x, y))
+                    break  # 遇到任何棋子（己方或敵方）都要停止
+                x, y = MTP(new_i, new_j)
+                print("Move:", x, y)
+                self.l.append((x, y))
+                new_i += m
+                new_j += n
+
         return self
+
     
     def ho(self,position:tuple):#馬
         x,y=PF(position)
@@ -250,6 +275,10 @@ RunDict={
             'bso':runner.b.so, 
 }
 class Center:
+    def __init__(self):
+        self.dragging = False
+        self.drag_piece = None
+        self.drag_offset = (0, 0)
     def init(self):
         'To initialize the chessboard'
         for i in range(len(Matrix)):
