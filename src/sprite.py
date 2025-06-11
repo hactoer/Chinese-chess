@@ -52,10 +52,6 @@ class Runner:
         self.l=[]
         move=[(1,1),(-1,1),(1,-1),(-1,-1)]
         for m,n in move:
-                        # if i <= 4:
-            #     lim = 5
-            # else:
-            #     lim = 9
             detect_i,detect_j=i+m,j+n
             new_i,new_j=i+2*m,j+2*n
             if 0<=new_i<=9 and 0<=new_j<=8:
@@ -64,9 +60,6 @@ class Runner:
                         self.antiside == 'b' and new_i >= 5):
                         if (Matrix[new_i][new_j]=="000" 
                         or Matrix[new_i][new_j][0]==self.antiside): #空or敵對
-                    # if ((s:=Matrix[new_i][new_j]) =="000"
-                    # or s[0]==self.antiside 
-                    # and lim-5<=new_i<=lim):
                             x,y=MTP(new_i,new_j)
                             self.l.append((x,y))      
         return self
@@ -117,10 +110,6 @@ class Runner:
         self.l=[]
         move=[(1,1),(-1,1),(1,-1),(-1,-1)]
         for m,n in move:
-            # if i <= 4:
-            #     lim = 5
-            # else:
-            #     lim = 9
             detect_i,detect_j=i+m,j+n
             new_i,new_j=i+2*m,j+2*n
             if 0<=new_i<=9 and 0<=new_j<=8:
@@ -129,9 +118,6 @@ class Runner:
                         self.antiside == 'b' and new_i >= 5):
                         if (Matrix[new_i][new_j]=="000" 
                         or Matrix[new_i][new_j][0]==self.antiside): #空or敵對
-                    # if ((s:=Matrix[new_i][new_j]) =="000"
-                    # or s[0]==self.antiside 
-                    # and lim-5<=new_i<=lim):
                             x,y=MTP(new_i,new_j)
                             self.l.append((x,y))      
         return self
@@ -270,6 +256,7 @@ class Center:
             for j in range(len(Matrix[i])):
                 if Matrix[i][j] in Dict:
                     screen.blit(Dict[Matrix[i][j]],MTP(i,j))
+        print(Matrix)
     def check(self,mospos:tuple):
         for events in pygame.event.get():
             if events.type==pygame.MOUSEBUTTONDOWN:
@@ -294,5 +281,29 @@ class Center:
             # 繪製到畫面上
             screen.blit(scaled_img, new_pos)
     def detect_general():
-        ...
+        red_pos = None
+        black_pos = None
+
+        # 找紅將與黑將的位置
+        for i in range(10):
+            for j in range(9):
+                if Matrix[i][j] == 'rge':
+                    red_pos = (i, j)
+                elif Matrix[i][j] == 'bge':
+                    black_pos = (i, j)
+
+        if red_pos is None or black_pos is None:
+            return False  # 有一邊沒將就不檢查了（例如遊戲還沒開始）
+
+        # 檢查是否在同一列
+        if red_pos[1] == black_pos[1]:  # 同一行
+            min_row = min(red_pos[0], black_pos[0])
+            max_row = max(red_pos[0], black_pos[0])
+
+            # 檢查中間是否有阻擋物（非 '000'）
+            for row in range(min_row + 1, max_row):
+                if Matrix[row][red_pos[1]] != '000':
+                    return False  # 有擋住
+            return True  # 無阻擋，將對將
+        return False
 center=Center()  
