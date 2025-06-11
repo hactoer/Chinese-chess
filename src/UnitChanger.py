@@ -7,10 +7,10 @@ def PF(pos:tuple):
     return (pos[0]-BoundaryLength//BlockLength)*BlockLength,(pos[1]-BoundaryLength)//BlockLength
 def PTM(x,y)->tuple:
     "Position to Matrix(x,y)->(y,x)"
-    if (x-BoundaryLength)%BlockLength!=0 or (y-BoundaryLength)%BlockLength!=0:
+    if (x-BoundaryLength)%BlockLength>1 or (y-BoundaryLength)%BlockLength>1:
         raise NotSimplfiedException('Not Simplified')
     else:
         return (y-BoundaryLength)//BlockLength+1,(x-BoundaryLength)//BlockLength+1
 def MTP(y,x)->tuple:
     "Matrix to Position"
-    return (y)*BlockLength+BoundaryLength,(x)*BlockLength+BoundaryLength
+    return (y)*BlockLength+BoundaryLength+sigma,(x)*BlockLength+BoundaryLength
