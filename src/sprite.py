@@ -268,21 +268,6 @@ class Center:
                 if Matrix[i][j] in Dict:
                     screen.blit(Dict[Matrix[i][j]],MTP(i,j))
         print(Matrix)
-    def check(self,mospos:tuple):
-        for events in pygame.event.get():
-            if events.type==pygame.MOUSEBUTTONDOWN:
-                pos=PTM(*PF(mospos))
-                if (m:=Matrix[*pos]) != '000':
-                    print(m,PTM(*PF(mospos)))
-                    self.dragging = True                    # 設定為正在拖曳
-                    self.drag_piece = m                     # 儲存正在拖的棋子代號
-                    piece_rect = Dict[m].get_rect(topleft=mospos)
-                    self.drag_offset = (mospos[0] - piece_rect.x, mospos[1] - piece_rect.y) 
-                    # 保留移動預覽提示
-                    RunDict[m](mospos).PrePrint()
-                else:
-                    Dict[m]=pygame.transform.scale(Dict[m],(r[0],r[1]))
-                    screen.blit(Dict[m],mospos)
     def run(self, mospos: tuple):
         if self.dragging and self.drag_piece:
              # 計算棋子應該畫在哪裡（讓滑鼠點始終維持在棋子內部）
@@ -317,4 +302,44 @@ class Center:
                     return False  # 有擋住
             return True  # 無阻擋，將對將
         return False
+    def check(self,mospos:tuple):
+        for events in pygame.event.get():
+            if events.type==pygame.MOUSEBUTTONDOWN:
+                pos=PTM(*PF(mospos))
+                if (m:=Matrix[*pos]) != '000':
+                    print(m,PTM(*PF(mospos)))
+                    self.dragging = True                    # 設定為正在拖曳
+                    self.drag_piece = m                     # 儲存正在拖的棋子代號
+                    piece_rect = Dict[m].get_rect(topleft=mospos)
+                    self.drag_offset = (mospos[0] - piece_rect.x, mospos[1] - piece_rect.y) 
+                    # 保留移動預覽提示
+                    RunDict[m](mospos).PrePrint()
+                else:
+                    Dict[m]=pygame.transform.scale(Dict[m],(r[0],r[1]))
+                    screen.blit(Dict[m],mospos)
+            if events.type==pygame.MOUSEBUTTONUP:
+                if self.dragging and self.drag_piece:
+                    self.dragging = False
+                    pos = PTM(*PF(mospos))
+                    if pos in RunDict[self.drag_piece](mospos).l:
+                        orig_pos = None
+                        for i in range(10):
+                            for j in range(9):
+                                if Matrix[i][j] == self.drag_piece:
+                                    orig_pos = (i, j)
+                                    break
+                            if orig_pos:
+                                break
+                        if orig_pos:
+                            Matrix[orig_pos[0]][orig_pos[1]] = '000'
+                            Matrix[pos[0]][pos[1]] = self.drag_piece
+                            print(f"Moved {self.drag_piece} to {pos}")
+                            # if detect_general():
+                            #     print("將軍!")
+                        else:
+                            print("Error: Original position not found.")
+                    else:
+                        print("Invalid move. Returning piece to original position.")
+                    self.drag_piece = None
+                    self.init()
 center=Center()  
