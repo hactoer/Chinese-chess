@@ -63,25 +63,7 @@ class Runner:
                             x,y=MTP(new_i,new_j)
                             self.l.append((x,y))      
         return self
-
-    # def ch(self,position:tuple):#車
-    #     x,y=PF(position)
-    #     i,j=PTM(x,y)
-    #     self.l=[]
-    #     move=[(1,0),(-1,0),(0,1),(0,-1)]
-    #     for m,n in move:
-    #         new_i=i+m
-    #         new_j=j+n
-    #         while 0<=new_i<=9 and 0<=new_j<=8:
-    #             x,y=MTP(i,j)
-    #             print(x,y)
-    #             self.l.append((x,y))
-    #             if (self.antiside==Matrix[i+m][j+n][0] 
-    #             and ):
-    #                 x,y=MTP(i+m,j+n)
-    #                 print(x,y)
-    #                 self.l.append((x,y))
-    #     return self
+    
     def ch(self, position: tuple):  # 車
         x, y = PF(position)
         i, j = PTM(x, y)

@@ -1,6 +1,7 @@
 import pygame
 from ui.screen import *
 from game.playgame import *
+pygame.init()
 def main():
     pygame.init()
     LoadING(skip=True)
