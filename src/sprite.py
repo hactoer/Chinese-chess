@@ -317,7 +317,8 @@ class Center:
                 else:
                     Dict[m]=pygame.transform.scale(Dict[m],(r[0],r[1]))
                     screen.blit(Dict[m],mospos)
-            if events.type==pygame.MOUSEBUTTONUP:
+                    
+            if events.type==pygame.MOUSEBUTTONUP:     #相反地
                 if self.dragging and self.drag_piece:
                     self.dragging = False
                     pos = PTM(*PF(mospos))
@@ -334,8 +335,8 @@ class Center:
                             Matrix[orig_pos[0]][orig_pos[1]] = '000'
                             Matrix[pos[0]][pos[1]] = self.drag_piece
                             print(f"Moved {self.drag_piece} to {pos}")
-                            # if detect_general():
-                            #     print("將軍!")
+                            if Center.detect_general():
+                                print("將軍!")
                         else:
                             print("Error: Original position not found.")
                     else:
