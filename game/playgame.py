@@ -1,6 +1,6 @@
 #雙人對戰
 import pygame
-from src.sprite import screen,center
+from src.sprite import screen, center
 def game(mode):
     run=True
     if mode=='TwoPlayer':
@@ -15,6 +15,7 @@ def game(mode):
                 if event.type==pygame.QUIT:
                     pygame.quit()
                 elif event.type == pygame.MOUSEBUTTONUP:
+                    center.move_piece(mp)  # 新增：處理棋子移動
                     center.dragging = False
                     center.drag_piece = None
     pygame.quit()
