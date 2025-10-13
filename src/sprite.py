@@ -90,44 +90,30 @@ class Runner:
         return self
 
     
-    def ho(self,position:tuple):#馬
-        x,y=PF(position)
-        i,j=PTM(x,y)
-        self.l=[]
-        d={1:(+1,+1),
-           2:(-1,+1),
-           3:(-1,-1),
-           4:(+1,-1),
-           }
-        d2={(0,1):(d[1],d[2]),
-            (1,0):(d[1],d[4]),
-            (0,-1):(d[3],d[4]),
-            (-1,0):(d[2],d[3]),
-            }
-        move=[(1,0),(-1,0),(0,1),(0,-1)]
-        for m,n in move:
-
-            if Matrix[i+m][j+n] not in Dict:
-                if ((a:=Matrix[i+m+d2[(m,n)][0][1]][j+n+d2[(m,n)][0][0]]) 
-                and a[0]==self.antiside 
-                or a=='000'):
-                    x,y=MTP(i+m+d2[(m,n)][0][1],j+n+d2[(m,n)][0][0])
-        x,y=PF(position)
-        i,j=PTM(x,y)
-        self.l=[]
-        move=[(1,1),(-1,1),(1,-1),(-1,-1)]
-        for m,n in move:
-            detect_i,detect_j=i+m,j+n
-            new_i,new_j=i+2*m,j+2*n
-            if 0<=new_i<=9 and 0<=new_j<=8:
-                if Matrix[detect_i][detect_j]=="000":     #沒被塞象眼
-                    if (self.antiside == 'r' and new_i <= 4 or 
-                        self.antiside == 'b' and new_i >= 5):
-                        if (Matrix[new_i][new_j]=="000" 
-                        or Matrix[new_i][new_j][0]==self.antiside): #空or敵對
-                            x,y=MTP(new_i,new_j)
-                            self.l.append((x,y))      
-        return self
+    def ho(self, position: tuple): # 馬
+        x, y = PF(position)
+        i, j = PTM(x, y)
+        self.l = []
+        
+        # 馬走日，move 為蹩馬腿的位置，targets 為對應可跳的位置
+        directions = {
+            (1, 0): [(2, 1), (2, -1)],   # 下
+            (-1, 0): [(-2, 1), (-2, -1)], # 上
+            (0, 1): [(1, 2), (-1, 2)],   # 右
+            (0, -1): [(1, -2), (-1, -2)]  # 左
+        }
+        
+        for leg, targets in directions.items():
+            leg_i, leg_j = i + leg[0], j + leg[1]
+            if 0 <= leg_i <= 9 and 0 <= leg_j <= 8:
+                if Matrix[leg_i][leg_j] == "000": # 沒蹩馬腿
+                    for ti, tj in targets:
+                        target_i, target_j = i + ti, j + tj
+                        if 0 <= target_i <= 9 and 0 <= target_j <= 8:
+                            target_piece = Matrix[target_i][target_j]
+                            if target_piece == "000" or target_piece[0] == self.antiside:
+                                self.l.append(MTP(target_i, target_j))
+        return self 
 
     def ad(self,position:tuple):  #士
         x,y=PF(position)
@@ -302,45 +288,40 @@ class Center:
                     return False  # 有擋住
             return True  # 無阻擋，將對將
         return False
-    def check(self,mospos:tuple):
-        for events in pygame.event.get():
-            if events.type==pygame.MOUSEBUTTONDOWN:
-                pos=PTM(*PF(mospos))
-                if (m:=Matrix[*pos]) != '000':
-                    print(m,PTM(*PF(mospos)))
-                    self.dragging = True                    # 設定為正在拖曳
-                    self.drag_piece = m                     # 儲存正在拖的棋子代號
-                    piece_rect = Dict[m].get_rect(topleft=mospos)
-                    self.drag_offset = (mospos[0] - piece_rect.x, mospos[1] - piece_rect.y) 
-                    # 保留移動預覽提示
-                    RunDict[m](mospos).PrePrint()
-                else:
-                    Dict[m]=pygame.transform.scale(Dict[m],(r[0],r[1]))
-                    screen.blit(Dict[m],mospos)
-                    
-            if events.type==pygame.MOUSEBUTTONUP:     #相反地
+    def check(self, event, mospos: tuple): # 修改：增加 event 參數
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = PTM(*PF(mospos))
+                if 0 <= pos[0] < 10 and 0 <= pos[1] < 9: # 增加邊界檢查
+                    m = Matrix[pos[0]][pos[1]]
+                    if m != '000':
+                        print(m, pos)
+                        self.dragging = True
+                        self.drag_piece = m
+                        # 計算偏移量，讓滑鼠點在棋子中心附近
+                        self.drag_offset = (mospos[0] % 60, mospos[1] % 60) # 依據你的 R 調整
+                        
+            elif event.type == pygame.MOUSEBUTTONUP:
                 if self.dragging and self.drag_piece:
                     self.dragging = False
                     pos = PTM(*PF(mospos))
+                    
+                    # 檢查移動合法性
                     if pos in RunDict[self.drag_piece](mospos).l:
+                        # 尋找舊位置並移動 (這裡保留你原本的邏輯)
                         orig_pos = None
                         for i in range(10):
                             for j in range(9):
                                 if Matrix[i][j] == self.drag_piece:
                                     orig_pos = (i, j)
                                     break
-                            if orig_pos:
-                                break
+                            if orig_pos: break
+                        
                         if orig_pos:
                             Matrix[orig_pos[0]][orig_pos[1]] = '000'
                             Matrix[pos[0]][pos[1]] = self.drag_piece
-                            print(f"Moved {self.drag_piece} to {pos}")
                             if Center.detect_general():
                                 print("將軍!")
-                        else:
-                            print("Error: Original position not found.")
-                    else:
-                        print("Invalid move. Returning piece to original position.")
+                    
                     self.drag_piece = None
                     self.init()
 center=Center()  
